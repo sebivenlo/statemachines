@@ -1,0 +1,302 @@
+= Ball(s) at Olifantys Life Demo notes
+Pieter van den Hombergh
+v0.3, 2016-05-15
+:toc: right
+:source-highlighter: coderay
+:coderay-linenums-mode: inline
+:linkcss: true
+:stylesdir: adoc-css
+:scriptsdir: adoc-js
+:theme: golo
+:icons: font
+:sourcedir: ./solution/olifantysballs/src
+:testsourcedir: ./solution/olifantysballs/test
+
+Working through this project gave me some new insights or made me realize that
+there is much sense in demonstrating things to students.
+
+The exercise is about:
+
+* implementing a state machine using the GoF State Pattern,
+* using test driven development
+* and using a Java enum to implement the concrete states.
+
+== The scenario.
+Follow this scenario:
+
+ * Start with the explanation of the project, a simple gumball machine with
+  four events:
+  ** `injectCoin(...)`,
+  ** `ejectCoin(...)`,
+  ** `refill(...)`
+  ** and `draw(...)`
+    which can be understood as events, modeled in the interface `State` and should
+    therefor have an implementation (work) in each state.
+  * and four states:
+  ** `SoldOut`,
+  ** `NoCoin`,
+  ** `HasCoin`
+  ** and `Winner`.
+
+  * The initial project has some issues, design wise, but we will address those later.
+
+Study the <<state_diagram>>.
+[[state_diagram]]
+image::statemachine.svg[State machine]
+Study it, this is the (whole) specification of the first SUT.
+
+We will start testing the state class. As we have chosen to implement the states
+using a `enum`.
+We let our `enum`, called `StateEnum` in this designed, implement
+the `State` interface.
+
+The relation between the context and its states, designed according to the https://en.wikipedia.org/wiki/Design_Patternshttps://en.wikipedia.org/wiki/Design_Patterns[GoF^] design pattern https://en.wikipedia.org/wiki/State_pattern[State ^].
+[[context]]
+image::context.svg[Context]
+
+Because both the Java artifacts Context and State are interfaces I have added the UML public visibility attribute to all methods, because that is how interfaces work in Java.
+
+A traditional way to present state and state machine for completeness is a state transition table. This technique predates UML, but is still valuable, in particular because it will list all possibilities and will therefor help to find more test cases.
+Because we have four states and four state-affecting events, the table should have at least have 4 times 4 = 16 lines. The guard conditions that are used add to the number of lines for the states Winner and HasCoin.
+
+
+[[StateTable]]
+|===
+| Start state | Event/Method [ && Guard ] | End State footnote:[emptycell,Empty cell means no state change]
+
+| SoldOut
+| `insertCoin()`
+|
+
+| SoldOut
+| `draw()`
+|
+
+| SoldOut
+| `ejectCoin()`
+|
+
+| SoldOut
+| `refill(...)`
+| NoCoin
+
+| NoCoin
+| `draw()`
+|
+
+| NoCoin
+| `ejectCoin()`
+|
+
+| NoCoin
+| `refill(...)`
+|
+
+| NoCoin
+| `insertCoin()`
+| HasCoin
+
+| HasCoin
+| `insertCoin()`
+|
+
+| HasCoin
+| `refill(...)`
+|
+
+| HasCoin
+| `draw() && isEmpty()`
+| SoldOut
+
+| HasCoin
+| `draw() && !isEmpty() && isWinner()`
+| Winner
+
+| HasCoin
+| `draw() && !isEmpty() && !isWinner()`
+| NoCoin
+
+| HasCoin
+| `ejectCoin()`
+| NoCoin
+
+| Winner
+| `refill(...)`
+|
+
+| Winner
+| `ejectCoin()`
+|
+
+| Winner
+| `insertCoin()`
+|
+
+| Winner
+| `draw() && isEmpty()`
+| SoldOut
+
+| Winner
+| `draw() && ! isEmpty()`
+| NoCoin
+
+
+|===
+
+The table reiterates that the state `HasCoin` needs the most attention in testing.
+Also note that this table is only specification, just like the state diagram.
+
+== Lets get coding
+...err, writing our tests.
+To get our State tested without any real machine nearby, we must mock out `Context`. This can be done by hand, but soon makes us create a context implementation that sort of works, but
+
+ * first of all, is not tested itself
+ * Does not behave the way
+ we need it in the test
+ * We do not need to have this context to behave in any way other then to give predictable answers when called by the State, and we must ensure that the State has the exact interactions we want. Not too few, and may also not too many.
+
+This is where http://mockito.org[Mockito ^] comes in. We only need a tiny part of it, namely
+
+  * the mocking facility,
+  * recording and playback of method calls and return values
+  * verification of the correct calls on the mocked Context.
+
+Our setup looks as follows:
+
+[[Mock-setup]]
+[source,java]
+----
+include::{testsourcedir}/olifantysballs/StateEnumTest.java[lines=23..33]
+----
+
+<1> Makes mockito insert a mocked context, that is a class that can be controlled in our tests.
+<2> Is the type and name of the mock.
+<3> Creates a StringOutput and
+<4> ensure that anything output by the context is returned in an easily interpreted `String`. Also, every test is executed between a `setup()` and `teardown` call, if available (In Junit 4, annotated with @Before and @After).
+This makes inspection of the output easier.
+<5> Sets the Mockito annotations to do their thing and
+<6> Lets the machine return our crafted out when it calls for it's PrintStream.
+
+This basic setup is done for every test anew and makes sure our SUT has a fresh collaborator every time, ignorant of what happened in earlier tests.
+
+=== First test
+
+Let us write out first test: Make sure the machine does not return any ball(s) when it's state is `NoCoin`. From the <<state_diagram>> we learn that the action `draw()` should only be effective in the state `HasCoin`. This gives the interaction, modeled in the sequence diagram below.
+
+[[sequence_draw]]
+image::seq_draw.svg[Draw]
+
+As can be seen in the sequence diagram, the `dispense()` call is only allowed in the state `HasCoin`, not in `NoCoin`. Let the test `verify` that using a mockito verify. A Mockito verify is similar to a JUnit test, it will complain (in Java: throw an Assert Exception), when the right things are NOT happening.
+
+[[First-Test]]
+[source,java]
+----
+include::{testsourcedir}/olifantysballs/StateEnumTest.java[lines=62..76]
+----
+
+<1> Select the appropriate instance of the SUT.
+<2> Invoke the interaction
+<3> Capture the response
+<4> JUnit assert the appropriate response
+<5> Ensure no state change happened (we are still looking at `NoCoin`), using a Mockito `verify(...)`.
+<6> and
+<7> Verify that the `dispense()` method is not called.
+
+=== And then some
+
+Work through the remainder of the tests.
+
+ * `testValues()` To see if all states are there. (Coverage)
+ * `testValueOf()` Ih the name translation works.  (Coverage)
+ * `test_no_quarter_draws_nothing()` Verify that `dispense()` is _NOT_ called and state is not changed.
+ * `test_one_coin_dispenses_ball()` Verify that `dispense()` is called and state is changed to `NoCoin`.
+ * `test_winner_dispenses_ball()` Verify that winner dispenses a ball and leaves the machine empty.
+ * `test_one_draw_to_winner()` Verify that the guard `isWinner() == true` leads to state `Winner` and that there is also a `dispense()` call.
+  * `test_winner_takes_all()` Winner will take last ball. (Guess).
+  * `test_winner_not_so_gready()` Winner leaves a ball. (Guess).
+  * `test_one_ball_to_sold_out()` Make sure that `isEmpty()` is called and next state is `SoldOut` when isEmpty returns false.
+  * `insert_no_coin_to_has_coin()` Does inserting a coin have the proper effect?
+  * `eject_has_coin_to_no_coin()` Does ejecting the coin have the proper effect?
+  * `refill_back_to_business()` Does refill make the machine 'Betriebsbereit'?
+  * `fill_it_up_in_every_state()` What happens when you refill in all states. Make sure only `SoldOut` changes state to `NoCoin` and in all other cases the state of the context is 'unaffected'.
+
+=== Integrate with the real Context, the `OlifantysBallMachine`
+
+There are strong advantages when using enum as a state implementation:
+
+  * There is no change of creating a new state. Enum ensures that the only instances there ever will be are created at class loading time.
+  * The instances can be shared between contexts, because the State do no have any state. The state is saved in the context, remember. This is not because enums cannot have state, they can, but because a state in a state-machine shouldn't. It IS the state and should not have any. More importantly, they are immutable, meaning no one can break them and set the State into some wrong state.
+  * The state is easily tested without a need for a complex context. It can easily be mocked as we have seen in the earlier test.
+
+Of course, by just testing the states, you are yet done. You must also test the context and see if that uses the states properly and as intended.
+
+One of the more interesting use cases is:
+_When I insert a coin in any state, ensure that only state NoCoin leads to a new State (HasCoin)._
+
+In this test we again use Mockito, now not just to mock things, but to spy instead.
+The whole setup and testing can take place in one test method.
+
+[[insert_to_no_coin]]
+[source,java]
+----
+include::{testsourcedir}/olifantysballs/OlifantysBallMachineTest.java[lines=63..78]
+----
+<1> First we make SUT, than 'bug' it, that is give it to a spy to his thing with it.
+Now we iteract with the SUT _through_ the spy in
+
+<2> insert a coin
+<3> and again
+<4> which should only result in one state change,
+<5> namely in this state. (You could argue that this `assertSame(...)` is redundant and you would be right, here I doe this that the spy supports _invocation verification_ as well as the _normal JUnit stuff_.)
+
+==== A state machine should ignore event/methods
+
+Looking at the <<StateTable>>, we see a lot of states that should ignore method calls (all the empty cells in the End state column.)
+It looks a tedious job to write all these tests, but we might be able to use a Java 8 trick here: Why not pass in all methods as method references that should be ignored to a helper inside the test class.
+
+Writing this helper is trivial. We know nothing about the methods functions, so why take the simplest Functional interface of all as their template, Runnable.
+
+The helper would now look like this:
+
+[[no_state_change_helper]]
+[source,java]
+----
+include::{testsourcedir}/olifantysballs/OlifantysBallMachineTest.java[lines=161..172]
+----
+
+and used like this
+[[winner_ignores]]
+[source,java]
+----
+include::{testsourcedir}/olifantysballs/OlifantysBallMachineTest.java[lines=149..159]
+----
+
+
+== Test Driven, is that sufficient?
+After completing the initial implementation, let us look at some other qualities
+of our code and tests.
+
+=== How about coverage
+
+Demo jacaco JAva COde COverage with the Tikione https://netbeans.org/[NetBeans IDE plugin ^].
+
+
+First of all: did we test all there is to test? Is there some unchartered code, not tested? This is particularly bad in code that should model or implement behavior.
+Let us make sure we tested at least all we have in our `enum` and maybe `interface` in the State hierarchy too.
+
+=== Design issues.
+
+The initial design suggests to use interfaces both for the context
+(the automaton or state machine proper) and the state. Doing this often results
+in a too big API, because it exposes methods about state handling, which never should be accessible by the client application, outside the package.
+
+What can we do?
+
+* Make the State package private.
+* Make sure that the State does not occur as parameter or return value in `public` methods of the state machine. Since we started with the context design as an interface, we must do better.
+** Collapse the hierarchy, make enum (`private`) inner of state machine?
+** What is the effect on the methods (example cheating isWinner()).
+
+
+The solution I chose is that of making the Context into an `abstract class`, which gives me more control over the method's visibility as an `interface` does. I took out all methods that should not have relevance to any client of this implementation.
+I also made the `State`-interface package private and ensured that the state objects are not leaked n or out of the package (No `protected` or `public` on methods that have State as parameter or return type).

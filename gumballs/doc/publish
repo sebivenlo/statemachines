@@ -1,0 +1,7 @@
+#!/bin/bash
+target=olifantysballs.pdf
+hostdir=/home/sen1/public_html/pdf
+host=fontysvenlo.org
+scp  ${target} ${host}:${hostdir}
+ssh ${host} chmod g+rw ${hostdir}/${target}
+
