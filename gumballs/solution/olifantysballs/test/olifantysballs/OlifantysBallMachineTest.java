@@ -183,15 +183,13 @@ public class OlifantysBallMachineTest {
     public void ignored_events_in_winner() {
         //Start Solution::replacewith:://TODO 
         instance.setState( Winner );
-        OlifantysBallMachine spy = Mockito.spy( this.instance );
-        System.out.println( "sintance= " + spy.getClass().
+        OlifantysBallMachine spy = Mockito.spy( this.instance ); // <1>
+        System.out.println( "sintance= " + spy.getClass(). 
                 getCanonicalName() );
-        assertNoStateChangeSpied( spy,
-                spy::insertCoin,
-                spy::ejectCoin,
-                () -> {
-                    spy.refill( 2 );
-                }
+        assertNoStateChangeSpied( spy, // <2>
+                spy::insertCoin, // <3>
+                spy::ejectCoin, // <4>
+                () -> { spy.refill( 2 ); } /// <5>
         //                ,
         //                spy::draw // fails
         );
