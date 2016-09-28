@@ -92,7 +92,7 @@ interface Context {
      *
      * @return the previous state.
      */
-    default State changeState( StateEnum newState ) {
+    default State changeState( State newState ) {
         State oldState = getState();
         oldState.exit( this );
         setState( newState );
