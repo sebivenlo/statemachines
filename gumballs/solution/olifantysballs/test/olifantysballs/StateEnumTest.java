@@ -83,7 +83,7 @@ public class StateEnumTest {
         state.draw( machine );
         // verify one dispense and state change
         verify( machine, times( 1 ) ).dispense();
-        verify( machine ).setState( NoCoin );
+        verify( machine ).changeState( NoCoin );
     }
 
     @Test
@@ -95,7 +95,7 @@ public class StateEnumTest {
         state.draw( machine );
         // verify one dispense and state change
         verify( machine, times( 1 ) ).dispense();
-        verify( machine ).setState( SoldOut );
+        verify( machine ).changeState( SoldOut );
     }
 
     @Test
@@ -117,7 +117,7 @@ public class StateEnumTest {
         state.draw( machine );
         // verify one dispense and state change
         verify( machine, times( 1 ) ).dispense();
-        verify( machine ).setState( SoldOut );
+        verify( machine ).changeState( SoldOut );
 
     }
 
@@ -129,7 +129,7 @@ public class StateEnumTest {
         state.draw( machine );
         // verify one dispense and state change
         verify( machine, times( 1 ) ).dispense();
-        verify( machine ).setState( NoCoin );
+        verify( machine ).changeState( NoCoin );
 
     }
 
@@ -142,7 +142,7 @@ public class StateEnumTest {
         // verify one dispense and state change
         //verify( machine, times( 1 ) ).dispense();
         verify( machine, times( 1 ) ).isEmpty();
-        verify( machine ).setState( SoldOut );
+        verify( machine ).changeState( SoldOut );
     }
 
     @Test
@@ -150,7 +150,7 @@ public class StateEnumTest {
         System.out.println( "insert coin to has coin" );
         State state = NoCoin;
         state.insertCoin( machine );
-        verify( machine ).setState( HasCoin );
+        verify( machine ).changeState( HasCoin );
     }
 
     @Test
@@ -158,7 +158,7 @@ public class StateEnumTest {
         System.out.println( "eject to no coin" );
         State state = HasCoin;
         state.ejectCoin( machine );
-        verify( machine ).setState( NoCoin );
+        verify( machine ).changeState( NoCoin );
     }
 
     @Test
@@ -166,7 +166,7 @@ public class StateEnumTest {
         System.out.println( "refill back to business" );
         State state = SoldOut;
         state.refill( machine, 50 );
-        verify( machine ).setState( NoCoin );
+        verify( machine ).changeState( NoCoin );
     }
 
     @Test
