@@ -1,0 +1,10 @@
+verifieer UML OMG unified statemachines standaard
+16-11-2016 workshop JEE
+
+
+class StateStack:
+Stack of states which can be used to lookup states.
+Implementation is already abstract, can be improved by using a linked list ( not having the Arrays.copyOf() ).
+
+class StateEnum implements CCState:
+State enum defines states and which transitions can be used in these states. (also the entry/exit state are here defined).
