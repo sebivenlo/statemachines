@@ -1,0 +1,105 @@
+= Feedback and notes on StateMachines
+Jeroen Beulen <https://github.com/jbeulen>
+v1.0, 2016-10-12
+:toc:
+:description: Feedback and notes on StateMachines.
+:homepage: https://github.com/sebivenlo/statemachines
+
+toc::[]
+
+== Questions and Answers
+
+[qanda]
+Why does the Context's StateStack have a capacity?::
+Because it uses an Array of generic classes to remember its states and substates. +
+We're currently limited by the Array's capacity of 5, but if we changed the StateStack array to a LinkedList, we could go as deep as we wanted!
+
+
+
+== Notes and findings
+=== State History
+If we add a List of States to the Context, and add the states to that List in the enterState method, we'll have our first steps towards a State History!
+
+---
+=== Enums for States
+Choosing *ENUMS* for States is a good idea, since it forces a user to only use 1 instance, even if there are multiple contexts that all use the same States.
+
+IMPORTANT: It has to be made clear to users of the framework that they should never use fields in their states, as this can cause States to not react the same in different Contexts.
+
+---
+=== State Machine Diagram Types
+There are two types of State Machine Diagrams FSM and HSM:
+
+Finite State Machines (*FSM*)::
+The traditional (original) state machine. Only 1 state can be active at any time.
+
+Hierarchical State Machine (*HSM*)::
+A hierarchy of States exists, allowing multiple states to be active at the same time.
+HSM's can group states with similar behaviour together, making these diagrams many time easier to manage than the older FSM's.
+Keywords here are "Common behaviour" and "Reuse".
+
+---
+=== Entry & Exit Actions
+The current framework supports Entry- and Exit Actions on States as well as Actions on Transitions.
+I fear that lazy programmers will opt to only put Actions on their Transitions, rather than in States.
+
+This creates a *Transition-driven model* rather than a *State-driven model*.
+Even though (in theory) one is not better or worse than the other, I think that using a Transition-driven model is more prone to design errors, like code duplication.
+
+---
+=== Classes in the framework
+When there are only Contexts and States, it's difficult to separate the framework from the project's code.
+The Device class has been made to make this separation easier.
+
+
+In this new design, we can identify the following responsibilities:
+
+[cols="a, 3a", options="header"]
+.Components
+|===
+|Component |Notes
+
+|States
+|Contains: ::
+* Actions (for executing behaviour).
+* Transitions (rules for moving to other states).
+
+|Contexts
+|* Manage the StateStack (i.e. keep track of the current state).
+* Add items to the State History.
+* "Forwards" incoming events to the current state.
+
+(The term "event propogation" might be relevant here, but that implies that the Context manages and distributes events, which it doesn't.)
+
+|Devices
+|* Any event that a user or program sends to the state machine framework, should be coming in through the Device.
+* Any event coming out of the state machine framework should be coming out through the Device.
+|===
+
+== Solving problems the "Head First" way
+In my opinion, the "Head First Design Patterns" book introduces topics in a clear, simple way (albeit sometimes a bit too slowly).
+This way of introducing (sometimes complex) topics can be adapted to  be used in workshops and assigments as well.
+
+The way the "Head First Design Patterns" book works is: ::
+	. Present a problem.
+	. Present a possible solution.
+	*	Take the shortest path possible, it doesn't have to be easily extendible or adjustable to other scenarios.
+	. Improve the possible solution by making use of a Design Pattern.
+	. Introduce the theoretical Pattern, showing the connection between the theory and the improved solution from before.
+	. Final remarks
+	*	When to use the Pattern and when NOT to use it.
+	*	Pros and Cons of the Pattern.
+
+In my opinion, this way of introducing new material works great.::
+When studying the Olifantysballs assignment, the initial introduction to the StateMachine pattern was too complicated when the solution was presented all at once.
++
+If a sub-optimal solution is given first, an opportunity is created to show how it can be improved.
++
+This way, the student also has something to compare the final solution to, so that it is easier to see what is part of the project-specific implementation and what belongs to the theoretical pattern.
+
+An example of how the existing assigments can be improved: ::
+	. Create a program that simulates a Cruise Control module in a car, given a UML StateMachine Diagram.
+	*	(After the student had some time to think of possible solutions...)
+	.	Present an approach that features a switch-case structure.
+	. Encapsulate the behaviour of the cases into states.
+	. Introduce the rest of the framework.
