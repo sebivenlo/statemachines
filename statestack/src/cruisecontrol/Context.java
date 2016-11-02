@@ -1,61 +1,25 @@
-package statestack;
+package cruisecontrol;
 
-import static statestack.StateEnum.*;
+import cruisecontrol.CCState;
+import com.sun.javafx.scene.SceneHelper;
+import statestack.ContextBase;
+import static cruisecontrol.StateEnum.*;
+import statestack.DeviceBase;
+import statestack.StateBase;
 
 /**
  *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
  */
-class Context {
-    Device device = new Device();
-    private StateStack<CCState> stateStack = new StateStack<>( 5 );
+public class Context extends ContextBase<CCState, Device>{
 
     public Context() {
-        stateStack.push( NULL );
-        addState( IDLE );
+        super(new Device());
+        stateStack.push(NULL);
+        addState(IDLE);
+        System.out.println("current state is: " + stateStack.peek().toString());
     }
-
-    final void leaveState( CCState state ) {
-        if ( !stateStack.has( state ) ) {
-            throw new IllegalArgumentException( "Cannor leave state '" + state
-                                                        + "'because I am not in it "
-            );
-        }
-        CCState topState;
-        while ( ( topState = stateStack.pop() ) != state ) {
-            topState.exit( this );
-            //            System.out.println( "leaving " + topState );
-            //stateStack.pop();
-        }
-        topState.exit( this );
-        //System.out.println( "after leave logical state = " + logicalState() );
-    }
-
-    final void enterState( CCState... state ) {
-        addState( state );
-        //System.out.println( "after enter logical state = " + logicalState() );
-    }
-
-    final void addState( CCState... state ) {
-        for ( CCState cCState : state ) {
-            stateStack.push( cCState );
-            cCState.enter( this );
-        }
-    }
-
-    void changeFromToState( String event, CCState start, CCState... endState ) {
-        String oldState = logicalState();
-        leaveState( start );
-        enterState( endState );
-        System.out.println( "from logical state " + oldState + ", event '"
-                                    + event + "' to logical state "
-                                    + logicalState() );
-    }
-
-    CCState superState( CCState state ) {
-        return stateStack.peekDownFrom( state, 1 );
-    }
-
+    
     void engineOn() {
         stateStack.peek().engineOn( this );
     }
@@ -76,13 +40,4 @@ class Context {
         stateStack.peek().brakePressed( this );
     }
 
-    String logicalState() {
-        return stateStack.logicalState();
-    }
-
-    public Device getDevice() {
-        return device;
-    }
-
-    
 }

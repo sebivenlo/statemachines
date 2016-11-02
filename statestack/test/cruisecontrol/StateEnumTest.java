@@ -1,4 +1,4 @@
-package statestack;
+package cruisecontrol;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import static org.mockito.Mockito.*;
 
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static statestack.StateEnum.*;
+import static cruisecontrol.StateEnum.*;
 
 /**
  *

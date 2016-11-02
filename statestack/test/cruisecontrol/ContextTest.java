@@ -1,4 +1,4 @@
-package statestack;
+package cruisecontrol;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -42,6 +42,7 @@ public class ContextTest {
         context.engineOn();
         context.accelerate();
         context.cruise();
+        System.out.println("____ " + context.logicalState());
         assertEquals( "cruising", "ENGINERUNNING.AUTOMATEDCONTROL.NOTACCELERATING.CRUISING", context.logicalState() );
         context.brake();
         assertEquals( "not cruising", "ENGINERUNNING.CRUISINGOFF", context.logicalState() );

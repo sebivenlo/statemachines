@@ -1,10 +1,12 @@
-package statestack;
+package cruisecontrol;
+
+import statestack.DeviceBase;
 
 /**
  *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
  */
-class Device {
+public class Device implements DeviceBase{
     boolean braking = false;
 
     boolean isBraking() {
