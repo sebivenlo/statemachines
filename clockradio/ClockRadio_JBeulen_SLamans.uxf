@@ -4,8 +4,8 @@
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>546</x>
-      <y>63</y>
+      <x>259</x>
+      <y>126</y>
       <w>14</w>
       <h>14</h>
     </coordinates>
@@ -15,8 +15,8 @@
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>595</x>
-      <y>119</y>
+      <x>371</x>
+      <y>182</y>
       <w>84</w>
       <h>42</h>
     </coordinates>
@@ -26,9 +26,9 @@
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>476</x>
-      <y>56</y>
-      <w>441</w>
+      <x>210</x>
+      <y>119</y>
+      <w>581</w>
       <h>294</h>
     </coordinates>
     <panel_attributes>Powered
@@ -39,8 +39,8 @@ valign=top
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>504</x>
-      <y>210</y>
+      <x>322</x>
+      <y>273</y>
       <w>105</w>
       <h>63</h>
     </coordinates>
@@ -51,8 +51,8 @@ valign=bottom</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>742</x>
-      <y>210</y>
+      <x>560</x>
+      <y>273</y>
       <w>105</w>
       <h>63</h>
     </coordinates>
@@ -63,8 +63,8 @@ valign=bottom</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>553</x>
-      <y>315</y>
+      <x>371</x>
+      <y>378</y>
       <w>14</w>
       <h>14</h>
     </coordinates>
@@ -74,8 +74,8 @@ valign=bottom</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>378</x>
-      <y>63</y>
+      <x>112</x>
+      <y>119</y>
       <w>112</w>
       <h>28</h>
     </coordinates>
@@ -86,8 +86,8 @@ PowerOff</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>553</x>
-      <y>266</y>
+      <x>371</x>
+      <y>329</y>
       <w>21</w>
       <h>63</h>
     </coordinates>
@@ -97,8 +97,8 @@ PowerOff</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>602</x>
-      <y>210</y>
+      <x>420</x>
+      <y>273</y>
       <w>154</w>
       <h>28</h>
     </coordinates>
@@ -109,8 +109,8 @@ AlarmButtonPressed</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>602</x>
-      <y>245</y>
+      <x>420</x>
+      <y>308</y>
       <w>154</w>
       <h>28</h>
     </coordinates>
@@ -121,19 +121,19 @@ AlarmButtonReleased</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>469</x>
-      <y>182</y>
-      <w>462</w>
+      <x>203</x>
+      <y>245</y>
+      <w>602</w>
       <h>21</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;640.0;10.0</additional_attributes>
+    <additional_attributes>10.0;10.0;840.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>539</x>
-      <y>203</y>
+      <x>357</x>
+      <y>266</y>
       <w>56</w>
       <h>56</h>
     </coordinates>
@@ -146,8 +146,8 @@ AdjustTime</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>770</x>
-      <y>203</y>
+      <x>588</x>
+      <y>266</y>
       <w>56</w>
       <h>49</h>
     </coordinates>
@@ -160,8 +160,8 @@ AdjustTime</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>504</x>
-      <y>119</y>
+      <x>252</x>
+      <y>182</y>
       <w>84</w>
       <h>42</h>
     </coordinates>
@@ -171,8 +171,8 @@ AdjustTime</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>651</x>
-      <y>385</y>
+      <x>469</x>
+      <y>448</y>
       <w>322</w>
       <h>196</h>
     </coordinates>
@@ -183,8 +183,8 @@ valign=top</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>301</x>
-      <y>385</y>
+      <x>119</x>
+      <y>448</y>
       <w>322</w>
       <h>196</h>
     </coordinates>
@@ -195,8 +195,8 @@ valign=top</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>546</x>
-      <y>70</y>
+      <x>259</x>
+      <y>133</y>
       <w>21</w>
       <h>63</h>
     </coordinates>
@@ -206,10 +206,10 @@ valign=top</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>301</x>
-      <y>56</y>
+      <x>35</x>
+      <y>119</y>
       <w>84</w>
-      <h>42</h>
+      <h>56</h>
     </coordinates>
     <panel_attributes>NotPowered</panel_attributes>
     <additional_attributes/>
@@ -217,8 +217,8 @@ valign=top</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>434</x>
-      <y>525</y>
+      <x>252</x>
+      <y>588</y>
       <w>63</w>
       <h>28</h>
     </coordinates>
@@ -228,8 +228,8 @@ valign=top</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>434</x>
-      <y>413</y>
+      <x>252</x>
+      <y>476</y>
       <w>63</w>
       <h>28</h>
     </coordinates>
@@ -239,8 +239,8 @@ valign=top</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>434</x>
-      <y>469</y>
+      <x>252</x>
+      <y>532</y>
       <w>63</w>
       <h>28</h>
     </coordinates>
@@ -250,8 +250,8 @@ valign=top</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>455</x>
-      <y>434</y>
+      <x>273</x>
+      <y>497</y>
       <w>105</w>
       <h>49</h>
     </coordinates>
@@ -263,8 +263,8 @@ AlarmTimeReached
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>455</x>
-      <y>490</y>
+      <x>273</x>
+      <y>553</y>
       <w>119</w>
       <h>49</h>
     </coordinates>
@@ -275,8 +275,8 @@ SnoozeButtonPressed</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>399</x>
-      <y>476</y>
+      <x>217</x>
+      <y>539</y>
       <w>49</w>
       <h>77</h>
     </coordinates>
@@ -287,8 +287,8 @@ SnoozeButtonPressed</panel_attributes>
   <element>
     <id>Text</id>
     <coordinates>
-      <x>322</x>
-      <y>504</y>
+      <x>140</x>
+      <y>567</y>
       <w>84</w>
       <h>21</h>
     </coordinates>
@@ -298,8 +298,8 @@ SnoozeButtonPressed</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>791</x>
-      <y>413</y>
+      <x>609</x>
+      <y>476</y>
       <w>63</w>
       <h>28</h>
     </coordinates>
@@ -309,8 +309,8 @@ SnoozeButtonPressed</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>812</x>
-      <y>434</y>
+      <x>630</x>
+      <y>497</y>
       <w>105</w>
       <h>49</h>
     </coordinates>
@@ -322,8 +322,8 @@ AlarmTimeReached
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>791</x>
-      <y>469</y>
+      <x>609</x>
+      <y>532</y>
       <w>63</w>
       <h>28</h>
     </coordinates>
@@ -333,8 +333,8 @@ AlarmTimeReached
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>791</x>
-      <y>525</y>
+      <x>609</x>
+      <y>588</y>
       <w>63</w>
       <h>28</h>
     </coordinates>
@@ -344,8 +344,8 @@ AlarmTimeReached
   <element>
     <id>Text</id>
     <coordinates>
-      <x>679</x>
-      <y>504</y>
+      <x>497</x>
+      <y>567</y>
       <w>84</w>
       <h>21</h>
     </coordinates>
@@ -355,8 +355,8 @@ AlarmTimeReached
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>756</x>
-      <y>476</y>
+      <x>574</x>
+      <y>539</y>
       <w>49</w>
       <h>77</h>
     </coordinates>
@@ -367,8 +367,8 @@ AlarmTimeReached
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>812</x>
-      <y>490</y>
+      <x>630</x>
+      <y>553</y>
       <w>119</w>
       <h>49</h>
     </coordinates>
@@ -379,8 +379,8 @@ SnoozeButtonPressed</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>693</x>
-      <y>119</y>
+      <x>483</x>
+      <y>182</y>
       <w>84</w>
       <h>42</h>
     </coordinates>
@@ -391,8 +391,8 @@ symbol=substate</panel_attributes>
   <element>
     <id>UMLState</id>
     <coordinates>
-      <x>791</x>
-      <y>119</y>
+      <x>602</x>
+      <y>182</y>
       <w>84</w>
       <h>42</h>
     </coordinates>
@@ -403,8 +403,8 @@ symbol=substate</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>840</x>
-      <y>49</y>
+      <x>728</x>
+      <y>112</y>
       <w>70</w>
       <h>56</h>
     </coordinates>
@@ -417,8 +417,8 @@ AdjustVolume</panel_attributes>
   <element>
     <id>UMLSpecialState</id>
     <coordinates>
-      <x>364</x>
-      <y>133</y>
+      <x>98</x>
+      <y>196</y>
       <w>14</w>
       <h>14</h>
     </coordinates>
@@ -428,12 +428,156 @@ AdjustVolume</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>371</x>
-      <y>133</y>
+      <x>105</x>
+      <y>196</y>
       <w>119</w>
       <h>21</h>
     </coordinates>
     <panel_attributes>lt=-&gt;</panel_attributes>
     <additional_attributes>10.0;10.0;150.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>112</x>
+      <y>147</y>
+      <w>112</w>
+      <h>28</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+PowerOn</panel_attributes>
+    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>294</x>
+      <y>112</y>
+      <w>21</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>406</x>
+      <y>112</y>
+      <w>21</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>525</x>
+      <y>112</y>
+      <w>21</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>623</x>
+      <y>112</y>
+      <w>21</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>301</x>
+      <y>133</y>
+      <w>84</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>IdlePressed</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>413</x>
+      <y>133</y>
+      <w>84</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>RadioPressed</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>532</x>
+      <y>133</y>
+      <w>98</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>RadioAlarmPressed</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>630</x>
+      <y>133</y>
+      <w>98</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>BuzzerAlarmPressed</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>189</x>
+      <y>483</y>
+      <w>14</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>196</x>
+      <y>483</y>
+      <w>70</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>553</x>
+      <y>483</y>
+      <w>70</w>
+      <h>21</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;80.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLSpecialState</id>
+    <coordinates>
+      <x>546</x>
+      <y>483</y>
+      <w>14</w>
+      <h>14</h>
+    </coordinates>
+    <panel_attributes>type=initial</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>

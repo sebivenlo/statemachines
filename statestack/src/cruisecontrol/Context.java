@@ -1,11 +1,7 @@
 package cruisecontrol;
 
-import cruisecontrol.CCState;
-import com.sun.javafx.scene.SceneHelper;
 import statestack.ContextBase;
 import static cruisecontrol.StateEnum.*;
-import statestack.DeviceBase;
-import statestack.StateBase;
 
 /**
  *
