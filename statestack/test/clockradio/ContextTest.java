@@ -34,9 +34,7 @@ public class ContextTest {
         context.alarmTimeReached();
         context.idleButtonPressed();
         System.out.println("____ " + context.logicalState());
-        assertEquals( "cruising", "ENGINERUNNING.AUTOMATEDCONTROL.NOTACCELERATING.CRUISING", context.logicalState() );
-        assertEquals( "not cruising", "ENGINERUNNING.CRUISINGOFF", context.logicalState() );
-        
+        assertEquals( "cruising", "POWERED.IDLE_MODE.IDLE_MODE", context.logicalState() );
     }
 
     @Test(expected = IllegalArgumentException.class)
