@@ -124,7 +124,7 @@ public enum StateEnum implements CCState {
         @Override
         public void engineOff( ContextBase ctx ) {
             System.out.println( "in state " + ctx.logicalState()
-                    + " ignored event engineOff" );
+                    + " ignored eve nt engineOff" );
         }
 
         @Override

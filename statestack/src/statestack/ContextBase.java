@@ -34,6 +34,22 @@ public class ContextBase<C extends StateBase, D extends DeviceBase> {
             cCState.enter(this);
         }
     }
+    
+    final public void leaveSubStates(C state){
+        if (!stateStack.has(state)) {
+            throw new IllegalArgumentException("Cannor leave state '" + state
+                    + "'because I am not in it "
+            );
+        }
+        C topState;
+        while ((topState = stateStack.peek()) != state) {
+            stateStack.pop();
+            topState.exit(this);
+                        //System.out.println( "leaving " + topState );
+            //stateStack.pop();
+        }
+        
+    }
 
     final public void leaveState(C state) {
         if (!stateStack.has(state)) {
@@ -45,10 +61,8 @@ public class ContextBase<C extends StateBase, D extends DeviceBase> {
         while ((topState = stateStack.pop()) != state) {
             topState.exit(this);
             //            System.out.println( "leaving " + topState );
-            //stateStack.pop();
         }
         topState.exit(this);
-        //System.out.println( "after leave logical state = " + logicalState() );
     }
 
     public D getDevice() {
@@ -62,6 +76,15 @@ public class ContextBase<C extends StateBase, D extends DeviceBase> {
     public void changeFromToState(String event, C start, C... endState) {
         String oldState = logicalState();
         leaveState(start);
+        enterState(endState);
+        System.out.println("from logical state " + oldState + ", event '"
+                + event + "' to logical state "
+                + logicalState());
+    }
+    
+    public void innerTransition(String event, C start, C... endState) {
+        String oldState = logicalState();
+        leaveSubStates(start);
         enterState(endState);
         System.out.println("from logical state " + oldState + ", event '"
                 + event + "' to logical state "

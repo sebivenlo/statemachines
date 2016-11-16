@@ -25,16 +25,48 @@ public class ContextTest {
     @Test
     public void initialContext() {
         assertEquals( "check initial", "POWERED.IDLE_MODE", context.logicalState() );
-
+    }
+    
+    @Test
+    public void turnOff(){
+        context.powerOff();
+        assertEquals( "Powered off", "NOT_POWERED", context.logicalState() );
+        
+    }
+    
+    @Test
+    public void turnOn(){
+        context.powerOff();
+        context.alarmButtonPressed();
+        assertEquals( "Powered off, did not react to alarmButtonPressed", "NOT_POWERED", context.logicalState() );
+        context.powerOn();
+        assertEquals( "Powered on", "POWERED.IDLE_MODE", context.logicalState() );
+    }
+    
+    @Test
+    public void switchToPlayRadio(){
+        context.radioButtonPressed();
+        assertEquals( "Playing radio", "POWERED.RADIO_MODE", context.logicalState() );
+    }
+    
+    @Test
+    public void switchToRadioAlarm(){
+        context.radioAlarmButtonPressed();
+        assertEquals( "Playing radio", "POWERED.RADIO_ALARM.RADIO_ALARM_IDLE", context.logicalState() );
+    }
+    
+    @Test
+    public void switchToBuzzerAlarm(){
+        context.buzzerAlarmButtonPressed();
+        assertEquals( "Playing radio", "POWERED.BUZZER_ALARM.BUZZER_ALARM_IDLE", context.logicalState() );
     }
 
     @Test
-    public void cruisingBrake(){
+    public void turnRadioAlarmOff(){
         context.radioAlarmButtonPressed();
         context.alarmTimeReached();
         context.idleButtonPressed();
-        System.out.println("____ " + context.logicalState());
-        assertEquals( "cruising", "POWERED.IDLE_MODE.IDLE_MODE", context.logicalState() );
+        assertEquals( "idleing", "POWERED.IDLE_MODE", context.logicalState() );
     }
 
     @Test(expected = IllegalArgumentException.class)

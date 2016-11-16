@@ -10,34 +10,33 @@ public enum ClockRadioStateEnum implements ClockRadioState {
     NOT_POWERED {
         @Override
         public void powerOn(ContextBase ctx) {
-            ctx.changeFromToState("powerOn", this, POWERED, IDLE_MODE);
+            ctx.changeFromToState("powerOn", this, POWERED);
         }
     },
     POWERED {
         @Override
         public void enter(ContextBase ctx) {
-            //ctx.addState(IDLE_MODE);
-            ctx.changeFromToState( "enter", this, POWERED, IDLE_MODE );
+            ctx.addState(IDLE_MODE);
         }
 
         @Override
         public void idleButtonPressed(ContextBase ctx) {
-            ctx.changeFromToState("idleButtonPressed", this, POWERED, IDLE_MODE);
+            ctx.innerTransition("idleButtonPressed", this, IDLE_MODE);
         }
 
         @Override
         public void radioButtonPressed(ContextBase ctx) {
-            ctx.changeFromToState("radioButtonPressed", this, POWERED, RADIO_MODE);
+            ctx.innerTransition("radioButtonPressed", this, RADIO_MODE);
         }
 
         @Override
-        public void alarmButtonPressed(ContextBase ctx) {
-            ctx.changeFromToState("alarmButtonPressed", this, POWERED, RADIO_ALARM);
+        public void radioAlarmButtonPressed(ContextBase ctx) {
+            ctx.innerTransition("alarmButtonPressed", POWERED, RADIO_ALARM);
         }
 
         @Override
         public void buzzerAlarmButtonPressed(ContextBase ctx) {
-            ctx.changeFromToState("buzzerAlarmButtonPressed", this, POWERED, BUZZER_ALARM);
+            ctx.innerTransition("buzzerAlarmButtonPressed", this, BUZZER_ALARM);
         }
 
         @Override
@@ -100,42 +99,52 @@ public enum ClockRadioStateEnum implements ClockRadioState {
         public void powerOn(ContextBase ctx) {
             System.out.println("in state  " + ctx.logicalState() + " ignored event powerOn.");
         }
+
         @Override
         public void powerOff(ContextBase ctx) {
             System.out.println("in state  " + ctx.logicalState() + " ignored event powerOff.");
         }
+
         @Override
         public void idleButtonPressed(ContextBase ctx) {
             System.out.println("in state  " + ctx.logicalState() + " ignored event idleButtonPressed.");
         }
+
         @Override
         public void radioButtonPressed(ContextBase ctx) {
             System.out.println("in state  " + ctx.logicalState() + " ignored event radioButtonPressed.");
         }
+
         @Override
         public void radioAlarmButtonPressed(ContextBase ctx) {
             System.out.println("in state  " + ctx.logicalState() + " ignored event radioAlarmButtonPressed.");
         }
+
         @Override
         public void buzzerAlarmButtonPressed(ContextBase ctx) {
             System.out.println("in state  " + ctx.logicalState() + " ignored event buzzerAlarmButtonPressed.");
         }
+
         @Override
         public void alarmButtonPressed(ContextBase ctx) {
             System.out.println("in state  " + ctx.logicalState() + " ignored event alarmButtonPressed.");
         }
+
         @Override
         public void alarmButtonReleased(ContextBase ctx) {
             System.out.println("in state  " + ctx.logicalState() + " ignored event alarmButtonReleased.");
         }
+
         @Override
         public void alarmTimeReached(ContextBase ctx) {
             System.out.println("in state  " + ctx.logicalState() + " ignored event alarmTimeReached.");
         }
+
         @Override
         public void snoozeButtonPressed(ContextBase ctx) {
             System.out.println("in state  " + ctx.logicalState() + " ignored event snoozeButtonPressed.");
         }
+
         @Override
         public void snoozeTimeout(ContextBase ctx) {
             System.out.println("in state  " + ctx.logicalState() + " ignored event snoozeTimeout.");
