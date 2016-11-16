@@ -24,7 +24,6 @@ public enum ClockRadioStateEnum implements ClockRadioState {
     },
     ALARM_IDLE {
         // TODO
-
     },
     ALARM_BUZZING {
         // TODO
