@@ -7,9 +7,10 @@ import statewalker.ContextBase;
  *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
  */
-public enum RadioStateImpl implements RadioState {
+enum RadioStateImpl implements RadioState {
     NOT_POWERED {
         // TODO
+        
     },
     POWERED {
         // TODO

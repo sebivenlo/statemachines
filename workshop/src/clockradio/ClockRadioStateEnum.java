@@ -11,7 +11,23 @@ public enum ClockRadioStateEnum implements ClockRadioState {
         // TODO
     },
     POWERED {
+        @Override
+        public void enter( ContextBase ctx ) {
+            super.enter( ctx ); //To change body of generated methods, choose Tools | Templates.
+        }
+        
+        @Override
+        public void idleButtonPressed( ContextBase<ClockRadioState, ClockRadioDevice> ctx ) {
+            ctx.innerTransition( "idelButtonPressed", this, IDLE_MODE ); //To change body of generated methods, choose Tools | Templates.
+        }
         // TODO
+
+        @Override
+        public void powerOff( ContextBase<ClockRadioState, ClockRadioDevice> ctx ) {
+            ctx.changeFromToState( "poweroff", this, NOT_POWERED );
+        }
+        
+        
     },
     IDLE_MODE {
         // TODO
@@ -23,7 +39,12 @@ public enum ClockRadioStateEnum implements ClockRadioState {
         // TODO
     },
     ALARM_IDLE {
+        @Override
+        public void alarmTimeReached( ContextBase<ClockRadioState, ClockRadioDevice> ctx ) {
+            super.alarmTimeReached( ctx ); //To change body of generated methods, choose Tools | Templates.
+        }
         // TODO
+        
 
     },
     ALARM_BUZZING {

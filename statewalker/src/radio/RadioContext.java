@@ -9,4 +9,8 @@ import statewalker.ContextBase;
  */
 class RadioContext extends ContextBase<RadioContext,RadioDevice,RadioState>{
     
+    RadioContext( RadioDevice rdev ) {
+        super(rdev);
+    }
+    
 }
