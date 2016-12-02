@@ -1,4 +1,3 @@
-
 package radio;
 
 import statewalker.ContextBase;
@@ -7,6 +6,10 @@ import statewalker.ContextBase;
  *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
  */
-class RadioContext extends ContextBase<RadioContext,RadioDevice,RadioState>{
-    
+class RadioContext extends ContextBase<RadioContext, RadioDevice, RadioState> {
+
+    RadioContext( RadioDevice rdev ) {
+        super( rdev, RadioStateImpl.class );
+    }
+
 }

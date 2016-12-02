@@ -1,95 +1,123 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package statewalker;
+
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
+ * @param <C> Context for this state machine. This
+ * @param <D> Device for all operations 
+ * @param <S> State to maintain.
  */
-public class ContextBase<C extends ContextBase<C,D,S>,D extends Device<C,D,S>, S extends StateBase<C,D,S>> {
-    StateStack<S> stack;
-        protected StateStack<S> stateStack = new StateStack<>(5);
-    protected D device;
+public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, S>, S extends StateBase<C, D, S>> {
 
-    public ContextBase(D device) {
+    private StateStack<S> stack;
+    private final  StateStack<S> stateStack = new StateStack<>( 5 );
+    private D device;
+    private Map<S,S> initialMap = Collections.<S,S>emptyMap();
+
+    @SuppressWarnings("unchecked")
+    public ContextBase( D device, Class<?> stateClass ) {
+        this();
         this.device = device;
+        if (stateClass.getClass().isEnum()) {
+            Object[] enums = stateClass.getEnumConstants();
+            //Class<? extends Enum> eClass= (Class<? extends Enum> )stateClass;
+            EnumMap m = new EnumMap(stateClass);
+            for ( Object aEnum : enums ) {
+                m.put( (S)aEnum, (S)((StateBase)aEnum).getInitialState() );
+            }
+            this.initialMap= m;
+        }
     }
 
     public ContextBase() {
-    }
-    
-    final public void enterState(S... state) {
-        addState(state);
-        //System.out.println( "after enter logical state = " + logicalState() );
-    }
-
-    final public void addState(S... state) {
-        for (S cCState : state) {
-            stateStack.push(cCState);
-            cCState.enter(this);
-        }
-    }
-    
-    final public void leaveSubStates(S state){
-        if (!stateStack.has(state)) {
-            throw new IllegalArgumentException("Cannor leave state '" + state
-                    + "'because I am not in it "
-            );
-        }
-        S topState;
-        while ((topState = stateStack.peek()) != state) {
-            stateStack.pop();
-            topState.exit(this);
-                        //System.out.println( "leaving " + topState );
-            //stateStack.pop();
-        }
         
     }
 
-    final public void leaveState(S state) {
-        if (!stateStack.has(state)) {
-            throw new IllegalArgumentException("Cannor leave state '" + state
+    public final ContextBase setDevice( D device ) {
+        this.device = device;
+        return this;
+    }
+
+    @SafeVarargs
+    public final void enterState( S... state ) {
+        addState( state );
+        //System.out.println( "after enter logical state = " + logicalState() );
+    }
+
+    @SafeVarargs
+    @SuppressWarnings("unchecked")
+    public final void addState( S... state ) {
+        for ( S cCState : state ) {
+            stateStack.push( cCState );
+            cCState.enter( ( C ) this );
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public final void leaveSubStates( S state ) {
+        if ( !stateStack.has( state ) ) {
+            throw new IllegalArgumentException( "Cannor leave state '" + state
                     + "'because I am not in it "
             );
         }
         S topState;
-        while ((topState = stateStack.pop()) != state) {
-            topState.exit(this);
-            //            System.out.println( "leaving " + topState );
+        while ( ( topState = stateStack.peek() ) != state ) {
+            stateStack.pop();
+            topState.exit( ( C ) this );
+            //System.out.println( "leaving " + topState );
+            //stateStack.pop();
         }
-        topState.exit(this);
+
     }
 
-    public D getDevice() {
+    @SuppressWarnings( "unchecked" )
+    public final  void leaveState( S state ) {
+        if ( !stateStack.has( state ) ) {
+            throw new IllegalArgumentException( "Cannor leave state '" + state
+                    + "'because I am not in it "
+            );
+        }
+        S topState;
+        while ( ( topState = stateStack.pop() ) != state ) {
+            topState.exit( ( C ) this );
+            //            System.out.println( "leaving " + topState );
+        }
+        topState.exit( ( C ) this );
+    }
+
+    public final D getDevice() {
         return device;
     }
 
-    public S superState(S state) {
-        return stateStack.peekDownFrom(state, 1);
+    public final S superState( S state ) {
+        return stateStack.peekDownFrom( state, 1 );
     }
 
-    public void changeFromToState(String event, S start, S... endState) {
+    @SafeVarargs
+    public final void changeFromToState( String event, S start, S... endState ) {
         String oldState = logicalState();
-        leaveState(start);
-        enterState(endState);
-        System.out.println("from logical state " + oldState + ", event '"
+        leaveState( start );
+        enterState( endState );
+        System.out.println( "from logical state " + oldState + ", event '"
                 + event + "' to logical state "
-                + logicalState());
-    }
-    
-    public void innerTransition(String event, S start, S... endState) {
-        String oldState = logicalState();
-        leaveSubStates(start);
-        enterState(endState);
-        System.out.println("from logical state " + oldState + ", event '"
-                + event + "' to logical state "
-                + logicalState());
+                + logicalState() );
     }
 
-    public String logicalState() {
+    @SafeVarargs
+    public final void innerTransition( String event, S start, S... endState ) {
+        String oldState = logicalState();
+        leaveSubStates( start );
+        enterState( endState );
+        System.out.println( "from logical state " + oldState + ", event '"
+                + event + "' to logical state "
+                + logicalState() );
+    }
+
+    public final String logicalState() {
         return stateStack.logicalState();
     }
 

@@ -8,7 +8,7 @@ import java.util.Arrays;
  */
 public class StateStack<E> {
 
-    private static final int DEFAULT_CAPACITY = 4;
+    private static final int DEFAULT_CAPACITY = 10;
     private int top = -1;
     private E[] storage;
 
