@@ -10,6 +10,7 @@ import statewalker.ContextBase;
 public enum RadioStateImpl implements RadioState {
     NOT_POWERED {
         // TODO
+        
     },
     POWERED {
         // TODO
