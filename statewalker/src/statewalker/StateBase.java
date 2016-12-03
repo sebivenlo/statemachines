@@ -5,8 +5,6 @@
  */
 package statewalker;
 
-import java.util.Map;
-
 /**
  *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
@@ -21,14 +19,16 @@ public interface StateBase<C extends ContextBase<C, D, S>, D extends Device<C, D
      *
      * @param ctx the context for all operations.
      */
-    default void enter( C ctx ) { }
+    default void enter( C ctx ) {
+    }
 
     /**
      * This method is called whenever a state is left.
      *
      * @param ctx the context for all operations.
      */
-    default void exit( C ctx ) { }
+    default void exit( C ctx ) {
+    }
 
     /**
      * This method is used to ask all states for their initial sub state, so
@@ -36,5 +36,15 @@ public interface StateBase<C extends ContextBase<C, D, S>, D extends Device<C, D
      *
      * @return the initial sub-state of this state.
      */
-    S getInitialState();
+    default S getInitialState() {
+        return null;
+    }
+    /**
+     * Get the ordinal number (the identity) of the state.
+     * @return 
+     */
+    int ordinal();
+    
+    default boolean isInitialStateHistory(){ return false; }
+    S getNullState();
 }

@@ -25,7 +25,7 @@ enum RadioStateImpl implements RadioState {
     },
     RADIO_MODE {
         // TODO
-        
+
     },
     ALARM_MODE {
         // TODO
@@ -85,13 +85,15 @@ enum RadioStateImpl implements RadioState {
 
     };
 
-    private static final Map<RadioStateImpl,RadioState> initialMap = new EnumMap<>(RadioStateImpl.class);
+    private static final Map<RadioStateImpl, RadioState> initialMap = new EnumMap<>( RadioStateImpl.class );
+
     static {
         initialMap.put( POWERED, RADIO_MODE );
     }
-    
+
     @Override
-    public RadioState getInitialState() {
-        return null;
+    public RadioState getNullState() {
+        return NULL;
     }
+
 }

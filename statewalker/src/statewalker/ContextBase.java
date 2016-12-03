@@ -1,40 +1,32 @@
 package statewalker;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 /**
  *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
  * @param <C> Context for this state machine. This
- * @param <D> Device for all operations 
+ * @param <D> Device for all operations
  * @param <S> State to maintain.
  */
 public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, S>, S extends StateBase<C, D, S>> {
 
-    private StateStack<S> stack;
-    private final  StateStack<S> stateStack = new StateStack<>( 5 );
+    final StateStack<S> stack = new StateStack<>();
     private D device;
-    private Map<S,S> initialMap = Collections.<S,S>emptyMap();
+    private ArrayList<S> initialMap;
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public ContextBase( D device, Class<?> stateClass ) {
-        this();
+        //this();
         this.device = device;
-        if (stateClass.getClass().isEnum()) {
+        if ( stateClass.isEnum() ) {
             Object[] enums = stateClass.getEnumConstants();
-            //Class<? extends Enum> eClass= (Class<? extends Enum> )stateClass;
-            EnumMap m = new EnumMap(stateClass);
+            this.initialMap = new ArrayList<>( enums.length );
             for ( Object aEnum : enums ) {
-                m.put( (S)aEnum, (S)((StateBase)aEnum).getInitialState() );
+                this.initialMap.add( ( ( S ) aEnum ).getInitialState() );
             }
-            this.initialMap= m;
+            this.enterState(( ( S ) enums[ 0 ] ).getNullState() );
         }
-    }
-
-    public ContextBase() {
-        
     }
 
     public final ContextBase setDevice( D device ) {
@@ -44,59 +36,101 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
 
     @SafeVarargs
     public final void enterState( S... state ) {
-        addState( state );
-        //System.out.println( "after enter logical state = " + logicalState() );
+        for ( S s : state ) {
+
+            addState( s );
+            S substate = initialMap.get( s.ordinal() );
+            if ( null != substate ) {
+                addState( substate );
+            }
+        }
     }
 
     @SafeVarargs
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked" )
     public final void addState( S... state ) {
         for ( S cCState : state ) {
-            stateStack.push( cCState );
+            stack.push( cCState );
             cCState.enter( ( C ) this );
         }
     }
 
-    @SuppressWarnings("unchecked")
+    /**
+     * Top state (child-most) state is the place where to enter the events.
+     * 
+     * @return the top most (inner most/sub state most) state.
+     */
+    protected final S getTopState(){
+        return stack.peek();
+    }
+    /**
+     * Leave sub states of state, but not state itself.
+     *
+     * @param state for which the current sub-states should be left.
+     */
+    @SuppressWarnings( "unchecked" )
     public final void leaveSubStates( S state ) {
-        if ( !stateStack.has( state ) ) {
+        if ( !stack.has( state ) ) {
             throw new IllegalArgumentException( "Cannor leave state '" + state
-                    + "'because I am not in it "
-            );
+                    + "'because it is not active" );
         }
         S topState;
-        while ( ( topState = stateStack.peek() ) != state ) {
-            stateStack.pop();
+        while ( ( topState = stack.peek() ) != state ) {
             topState.exit( ( C ) this );
+            stack.pop();
             //System.out.println( "leaving " + topState );
             //stateStack.pop();
         }
-
     }
 
+    /**
+     * Leave a state and all its sub-states in natural order.
+     *
+     * @param state to leave.
+     */
     @SuppressWarnings( "unchecked" )
-    public final  void leaveState( S state ) {
-        if ( !stateStack.has( state ) ) {
+    public final void leaveState( S state ) {
+        if ( !stack.has( state ) ) {
             throw new IllegalArgumentException( "Cannor leave state '" + state
                     + "'because I am not in it "
             );
         }
         S topState;
-        while ( ( topState = stateStack.pop() ) != state ) {
+        while ( ( topState = stack.pop() ) != state ) {
             topState.exit( ( C ) this );
             //            System.out.println( "leaving " + topState );
         }
         topState.exit( ( C ) this );
     }
 
+    /**
+     * Get the device for all operations.
+     *
+     * @return the device
+     */
     public final D getDevice() {
         return device;
     }
 
+    /**
+     * Get the super state of a state.
+     *
+     * @param state for which the super state should be retrieved.
+     * @return
+     */
     public final S superState( S state ) {
-        return stateStack.peekDownFrom( state, 1 );
+        return stack.peekDownFrom( state, 1 );
     }
 
+    /**
+     * Do a full transition from a current state to a new state with optional
+     * sub-states. For the start state the leave method is invoked, for each
+     * state in endState the enter state is invoked.
+     *
+     * @param event name for the transition
+     * @param start state to leave
+     * @param endState states to enter in order given.
+     */
     @SafeVarargs
     public final void changeFromToState( String event, S start, S... endState ) {
         String oldState = logicalState();
@@ -107,6 +141,14 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
                 + logicalState() );
     }
 
+    /**
+     * Do a transition with out leaving this state. The sub states of state are
+     * left, then the endStates are entered in the order given.
+     *
+     * @param event name for the transition
+     * @param start state that is NOT left
+     * @param endState new inner state.
+     */
     @SafeVarargs
     public final void innerTransition( String event, S start, S... endState ) {
         String oldState = logicalState();
@@ -117,8 +159,14 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
                 + logicalState() );
     }
 
+    /**
+     * Produce a string to identify the sequence or nesting of states. The NULL
+     * state is left out.
+     *
+     * @return
+     */
     public final String logicalState() {
-        return stateStack.logicalState();
+        return stack.logicalState();
     }
 
 }
