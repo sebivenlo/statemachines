@@ -180,6 +180,11 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
         return stack.logicalState();
     }
 
+    /**
+     * Get the first active sub state of this parent or super state.
+     * @param parent for which the child  must be produced.
+     * @return The child, if any.
+     */
     public  S getFirstChild(S parent){
         return stack.peekDownFrom( parent, -1 );
     }
