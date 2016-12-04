@@ -75,8 +75,9 @@ class StateStack<E> implements Stack<E> {
         while (t > 0 && storage[t] != reference) {
             t--;
         }
-        if ( t -level >= 0 ) {
-            return storage[ t - level ];
+        int k = t -level ;
+        if ( k >= 0  && k < storage.length ) {
+            return storage[ k ];
         } else {
             return null;
         }

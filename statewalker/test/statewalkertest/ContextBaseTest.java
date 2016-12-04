@@ -7,6 +7,8 @@ package statewalkertest;
 
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import static statewalkertest.S.*;
@@ -55,6 +57,7 @@ public class ContextBaseTest {
     public void testE3() {
         System.out.println( "==== e3" );
         ctx.e1();
+        ctx.setDebug( false );
 
         ctx.e3();
         assertEquals( "SI", ctx.logicalState() );
@@ -64,7 +67,11 @@ public class ContextBaseTest {
     public void testE4() {
         System.out.println( "==== e4" );
         ctx.e1();
-
+        assertTrue(ctx.isDebug());
+        ctx.e4();
+        assertEquals( "S1.S12", ctx.logicalState() );
+        ctx.setDebug( false );
+        assertFalse(ctx.isDebug());
         ctx.e4();
         assertEquals( "S1.S12", ctx.logicalState() );
     }
@@ -120,11 +127,11 @@ public class ContextBaseTest {
         ctx.e1();
         assertEquals( S11, ctx.getFirstChild( S1 ) );
     }
-    
-    @Test(expected = IllegalArgumentException.class)
-    public void leavNonExistingSubStates(){
+
+    @Test( expected = IllegalArgumentException.class )
+    public void leavNonExistingSubStates() {
         ctx.e1();
-        ctx.leaveSubStates(S21);
+        ctx.leaveSubStates( S21 );
     }
 
     private void leaveSubStates( S s ) {

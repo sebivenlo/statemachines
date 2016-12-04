@@ -109,4 +109,37 @@ public class StateStackTest extends StackTestBase {
         }
         assertNull( "Not found", stack.peekDownFrom( "A", 1) );
     }
+    
+    @Test
+    public void testPeekUp(){
+       StateStack<String> stack = ( StateStack<String> ) createInstance();
+        String[] testData = { "A", "B", "C", "D", "E" };
+        for ( String s : testData ) {
+            stack.push( s );
+        }
+        assertEquals( "found", "E",stack.peekDownFrom( "D", -1) );
+    
+    }
+
+    @Test
+    public void testPeekUpNotFound(){
+       StateStack<String> stack = ( StateStack<String> ) createInstance();
+        String[] testData = { "A", "B", "C", "D", "E" };
+        for ( String s : testData ) {
+            stack.push( s );
+        }
+        assertNull( "Notfound",stack.peekDownFrom( "D", -2) );
+    
+    }
+
+    @Test
+    public void testPeekUpOverTop(){
+       StateStack<String> stack =  new StateStack<String>(5);
+        String[] testData = { "A", "B", "C", "D", "E" };
+        for ( String s : testData ) {
+            stack.push( s );
+        }
+        assertNull( "Notfound",stack.peekDownFrom( "E", -1) );
+    
+    }
 }

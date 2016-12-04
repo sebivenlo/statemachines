@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  */
 public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, S>, S extends StateBase<C, D, S>> {
 
-    private final StateStack<S> stack = new StateStack<>(6);
+    private final StateStack<S> stack = new StateStack<>( 6 );
     private D device;
     private ArrayList<S> initialMap;
     private final S nullState;
@@ -34,9 +34,11 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
         } else {
             nullState = null;
         }
-        final S initialState = nullState.getInitialState();
-        if ( initialState != null ) {
-            this.enterState( initialState );
+        if ( null != nullState ) {
+            final S initialState = nullState.getInitialState();
+            if ( initialState != null ) {
+                this.enterState( initialState );
+            }
         }
     }
 
@@ -202,7 +204,7 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
     @SuppressWarnings( "unchecked" )
     public C setDebug( boolean d ) {
         debug = d;
-        return (C) this;
+        return ( C ) this;
     }
 
 }
