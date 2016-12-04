@@ -1,6 +1,7 @@
 package statewalker;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  *
@@ -11,9 +12,11 @@ import java.util.ArrayList;
  */
 public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, S>, S extends StateBase<C, D, S>> {
 
-    final StateStack<S> stack = new StateStack<>();
+    private final StateStack<S> stack = new StateStack<>();
     private D device;
     private ArrayList<S> initialMap;
+    private final S nullState;
+    private static final Logger LOGGER = Logger.getLogger( ContextBase.class.getCanonicalName() );
 
     @SuppressWarnings( "unchecked" )
     public ContextBase( D device, Class<?> stateClass ) {
@@ -25,7 +28,10 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
             for ( Object aEnum : enums ) {
                 this.initialMap.add( ( ( S ) aEnum ).getInitialState() );
             }
-            this.enterState(( ( S ) enums[ 0 ] ).getNullState() );
+            nullState = ( ( S ) enums[ 0 ] ).getNullState();
+            this.enterState( nullState );
+        } else {
+            nullState = null;
         }
     }
 
@@ -57,12 +63,13 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
 
     /**
      * Top state (child-most) state is the place where to enter the events.
-     * 
+     *
      * @return the top most (inner most/sub state most) state.
      */
-    protected final S getTopState(){
+    protected final S getTopState() {
         return stack.peek();
     }
+
     /**
      * Leave sub states of state, but not state itself.
      *
@@ -76,10 +83,7 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
         }
         S topState;
         while ( ( topState = stack.peek() ) != state ) {
-            topState.exit( ( C ) this );
-            stack.pop();
-            //System.out.println( "leaving " + topState );
-            //stateStack.pop();
+            leaveAndPop();
         }
     }
 
@@ -90,17 +94,15 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
      */
     @SuppressWarnings( "unchecked" )
     public final void leaveState( S state ) {
-        if ( !stack.has( state ) ) {
-            throw new IllegalArgumentException( "Cannor leave state '" + state
-                    + "'because I am not in it "
-            );
-        }
-        S topState;
-        while ( ( topState = stack.pop() ) != state ) {
-            topState.exit( ( C ) this );
-            //            System.out.println( "leaving " + topState );
-        }
-        topState.exit( ( C ) this );
+        leaveSubStates( state );
+        leaveAndPop();
+    }
+
+    @SuppressWarnings( "unchecked" )
+    private void leaveAndPop() {
+        System.out.println( "about to leave "+logicalState() );
+        stack.peek().exit( ( C ) this );
+        stack.pop();
     }
 
     /**
@@ -136,8 +138,8 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
         String oldState = logicalState();
         leaveState( start );
         enterState( endState );
-        System.out.println( "from logical state " + oldState + ", event '"
-                + event + "' to logical state "
+        System.out.println( "from " + oldState + ", event '"
+                + event + "' to "
                 + logicalState() );
     }
 
@@ -154,8 +156,8 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
         String oldState = logicalState();
         leaveSubStates( start );
         enterState( endState );
-        System.out.println( "from logical state " + oldState + ", event '"
-                + event + "' to logical state "
+        System.out.println( "from " + oldState + ", event '"
+                + event + "' to "
                 + logicalState() );
     }
 
@@ -169,4 +171,7 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
         return stack.logicalState();
     }
 
+    public  S getFirstChild(S parent){
+        return stack.peekDownFrom( parent, -1 );
+    }
 }

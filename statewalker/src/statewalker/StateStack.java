@@ -6,7 +6,7 @@ import java.util.Arrays;
  *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
  */
-public class StateStack<E> {
+class StateStack<E> {
 
     private static final int DEFAULT_CAPACITY = 10;
     private int top = -1;
