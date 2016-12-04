@@ -130,7 +130,7 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
      * Get the super state of a state.
      *
      * @param state for which the super state should be retrieved.
-     * @return
+     * @return the super (parent) state of state.
      */
     public final S superState( S state ) {
         return stack.peekDownFrom( state, 1 );
@@ -181,7 +181,7 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
      * Produce a string to identify the sequence or nesting of states. The NULL
      * state is left out.
      *
-     * @return
+     * @return a string describing the full state value of this context.
      */
     public final String logicalState() {
         return stack.logicalState();
