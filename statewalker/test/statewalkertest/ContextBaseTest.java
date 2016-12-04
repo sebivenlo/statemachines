@@ -5,13 +5,11 @@
  */
 package statewalkertest;
 
-import java.util.EnumMap;
-import java.util.EnumSet;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
-import static statewalkertest.ContextBaseTest.S.*;
+import static statewalkertest.S.*;
 
 /**
  *
@@ -19,135 +17,11 @@ import static statewalkertest.ContextBaseTest.S.*;
  */
 public class ContextBaseTest {
 
-    enum S implements State {
-        SI {
-            @Override
-            public void e1( Context ctx ) {
-                ctx.changeFromToState( "e1", this, S1 );
-            }
-
-            @Override
-            public void e2( Context ctx ) {
-                ctx.changeFromToState( "e2", this, S2 );
-            }
-
-        }, S1 {
-            @Override
-            public State getInitialState() {
-                return S11;
-            }
-
-            @Override
-            public void e3( Context ctx ) {
-                ctx.changeFromToState( "e3", this, SI );
-            }
-
-            @Override
-            public void e4( Context ctx ) {
-                ctx.innerTransition( "e4", this, S12 );
-            }
-
-        }, S2 {
-
-            @Override
-            public void e5( Context ctx ) {
-                ctx.changeFromToState( "e5",  this, S1);
-            }
-
-            @Override
-            public void e6( Context ctx ) {
-                ctx.innerTransition( "e6", this, ctx.getFirstChild( this ) == S21 ? S22 : S21 );
-            }
-
-        }, S11, S12, S21, S22 , 
-        S221 {
-            @Override
-            public void e7( Context ctx ) {
-                ctx.changeFromToState( "e7", this, S222 );
-            }
-
-        }, S222, NULL {
-
-            @Override
-            public void e1( Context ctx ) {
-            }
-
-            @Override
-            public void e2( Context ctx ) {
-            }
-
-            @Override
-            public void e3( Context ctx ) {
-            }
-
-            @Override
-            public void e4( Context ctx ) {
-            }
-
-            @Override
-            public void e5( Context ctx ) {
-            }
-
-            @Override
-            public void e6( Context ctx ) {
-            }
-
-            @Override
-            public void e7( Context ctx ) {
-            }
-
-            @Override
-            public void exit( Context ctx ) {
-            }
-
-            @Override
-            public void enter( Context ctx ) {
-
-            }
-
-        };
-
-        @Override
-        public State getNullState() {
-            return NULL;
-        }
-
-        @Override
-        public void exit( Context ctx ) {
-           // System.out.println( "about to exit " + ctx.logicalState() );
-        }
-
-        @Override
-        public void enter( Context ctx ) {
-            //System.out.println( "just entered  " + ctx.logicalState() );
-        }
-
-        private static final EnumMap<S,S> initialMap= new EnumMap<>(S.class);
-        static {
-            initialMap.put( NULL,SI );
-            initialMap.put( S1,S11 );
-            initialMap.put( S2,S21 );
-            initialMap.put( S22,S221 );
-        }
-        @Override
-        public State getInitialState() {
-            return initialMap.get(this );
-        }
-
-        private static final EnumSet<S> isHist= EnumSet.<S>of( S22);
-
-        @Override
-        public boolean isInitialStateHistory() {
-            return isHist.contains( this );
-        }
-        
-    }
-
     Context ctx;
 
     @Before
     public void setup() {
-        ctx = new Context( new Dev(), S.class );
+        ctx = new Context( new Dev(), S.class ).setDebug( true );
     }
 
     @After
@@ -159,6 +33,7 @@ public class ContextBaseTest {
     public void constructorWorks() {
         System.out.println( "==== constructorWorks" );
         String ss = ctx.logicalState();
+        System.out.println( "initial state = " + ss );
         assertEquals( "SI", ss );
     }
 
@@ -184,7 +59,7 @@ public class ContextBaseTest {
         ctx.e3();
         assertEquals( "SI", ctx.logicalState() );
     }
-    
+
     @Test
     public void testE4() {
         System.out.println( "==== e4" );
@@ -215,6 +90,7 @@ public class ContextBaseTest {
         ctx.e6();
         assertEquals( "S2.S21", ctx.logicalState() );
     }
+
     @Test
     public void testE7() {
         System.out.println( "==== e7" );
@@ -224,8 +100,7 @@ public class ContextBaseTest {
 
         ctx.e7();
         assertEquals( "S2.S22.S222", ctx.logicalState() );
-        
-       
+
     }
 
     @Test
@@ -238,5 +113,21 @@ public class ContextBaseTest {
         ctx.e6();
         ctx.e6();
         assertEquals( "S2.S22.S222", ctx.logicalState() );
+    }
+
+    @Test
+    public void testGetFirstChild() {
+        ctx.e1();
+        assertEquals( S11, ctx.getFirstChild( S1 ) );
+    }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void leavNonExistingSubStates(){
+        ctx.e1();
+        ctx.leaveSubStates(S21);
+    }
+
+    private void leaveSubStates( S s ) {
+        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
     }
 }

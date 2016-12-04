@@ -12,10 +12,11 @@ import java.util.logging.Logger;
  */
 public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, S>, S extends StateBase<C, D, S>> {
 
-    private final StateStack<S> stack = new StateStack<>();
+    private final StateStack<S> stack = new StateStack<>(6);
     private D device;
     private ArrayList<S> initialMap;
     private final S nullState;
+    private boolean debug = false;
     private static final Logger LOGGER = Logger.getLogger( ContextBase.class.getCanonicalName() );
 
     @SuppressWarnings( "unchecked" )
@@ -64,10 +65,10 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
             int parentId = parent.ordinal();
             stack.push( childState );
             childState.enter( ( C ) this );
-            if (parent.isInitialStateHistory()){
+            if ( parent.isInitialStateHistory() ) {
                 this.initialMap.set( parentId, childState );
             }
-            
+
         }
     }
 
@@ -147,9 +148,11 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
         String oldState = logicalState();
         leaveState( start );
         enterState( endState );
-        System.out.println( "from " + oldState + ", event '"
-                + event + "' to "
-                + logicalState() );
+        if ( debug ) {
+            System.out.println( "from " + oldState + ", event '"
+                    + event + "' to "
+                    + logicalState() );
+        }
     }
 
     /**
@@ -165,9 +168,11 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
         String oldState = logicalState();
         leaveSubStates( start );
         enterState( endState );
-        System.out.println( "from " + oldState + ", event '"
-                + event + "' to "
-                + logicalState() );
+        if ( debug ) {
+            System.out.println( "from " + oldState + ", event '"
+                    + event + "' to "
+                    + logicalState() );
+        }
     }
 
     /**
@@ -182,10 +187,22 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
 
     /**
      * Get the first active sub state of this parent or super state.
-     * @param parent for which the child  must be produced.
+     *
+     * @param parent for which the child must be produced.
      * @return The child, if any.
      */
-    public  S getFirstChild(S parent){
+    public S getFirstChild( S parent ) {
         return stack.peekDownFrom( parent, -1 );
     }
+
+    public boolean isDebug() {
+        return debug;
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public C setDebug( boolean d ) {
+        debug = d;
+        return (C) this;
+    }
+
 }

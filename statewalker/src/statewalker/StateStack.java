@@ -6,9 +6,9 @@ import java.util.Arrays;
  *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
  */
-class StateStack<E> {
+class StateStack<E> implements Stack<E> {
 
-    private static final int DEFAULT_CAPACITY = 10;
+    private static final int DEFAULT_CAPACITY = 4;
     private int top = -1;
     private E[] storage;
 
@@ -29,10 +29,12 @@ class StateStack<E> {
         this( DEFAULT_CAPACITY );
     }
 
+    @Override
     public boolean isEmpty() {
         return 0 > top;
     }
 
+    @Override
     public void push( E e ) {
         ensureCapacity();
         storage[ ++top ] = e;
@@ -45,6 +47,7 @@ class StateStack<E> {
      * @throws RuntimeException if peek in the same state of this stack.
      * @see #peek()
      */
+    @Override
     public E pop() {
         E result = peek();
         storage[ top-- ] = null;
@@ -58,6 +61,7 @@ class StateStack<E> {
      * @return the top element
      * @throws ArrayIndexOutOfBoundsException on empty stack.
      */
+    @Override
     public E peek() {
         return storage[ top ];
     }
@@ -121,7 +125,7 @@ class StateStack<E> {
         return storage.length;
     }
 
-    boolean contains( Object e ) {
+    public boolean contains( Object e ) {
         for ( Object o : storage ) {
             if ( e == o ) {
                 return true;
