@@ -5,10 +5,11 @@
  */
 package statewalkertest;
 
+import java.util.EnumMap;
+import java.util.EnumSet;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import static statewalkertest.ContextBaseTest.S.*;
 
@@ -47,10 +48,6 @@ public class ContextBaseTest {
             }
 
         }, S2 {
-            @Override
-            public State getInitialState() {
-                return S21;
-            }
 
             @Override
             public void e5( Context ctx ) {
@@ -62,30 +59,14 @@ public class ContextBaseTest {
                 ctx.innerTransition( "e6", this, ctx.getFirstChild( this ) == S21 ? S22 : S21 );
             }
 
-        }, S11, S12, S21 {
-
-        }, S22 {
-
-            @Override
-            public State getInitialState() {
-                return S221;
-            }
-
-            @Override
-            public boolean isInitialStateHistory() {
-                return true;
-            }
-        }, S221 {
+        }, S11, S12, S21, S22 , 
+        S221 {
             @Override
             public void e7( Context ctx ) {
                 ctx.changeFromToState( "e7", this, S222 );
             }
 
         }, S222, NULL {
-            @Override
-            public State getInitialState() {
-                return SI; //To change body of generated methods, choose Tools | Templates.
-            }
 
             @Override
             public void e1( Context ctx ) {
@@ -133,14 +114,33 @@ public class ContextBaseTest {
 
         @Override
         public void exit( Context ctx ) {
-            System.out.println( "about to exit " + ctx.logicalState() );
+           // System.out.println( "about to exit " + ctx.logicalState() );
         }
 
         @Override
         public void enter( Context ctx ) {
-            System.out.println( "just entered  " + ctx.logicalState() );
+            //System.out.println( "just entered  " + ctx.logicalState() );
         }
 
+        private static final EnumMap<S,S> initialMap= new EnumMap<>(S.class);
+        static {
+            initialMap.put( NULL,SI );
+            initialMap.put( S1,S11 );
+            initialMap.put( S2,S21 );
+            initialMap.put( S22,S221 );
+        }
+        @Override
+        public State getInitialState() {
+            return initialMap.get(this );
+        }
+
+        private static final EnumSet<S> isHist= EnumSet.<S>of( S22);
+
+        @Override
+        public boolean isInitialStateHistory() {
+            return isHist.contains( this );
+        }
+        
     }
 
     Context ctx;
@@ -239,7 +239,4 @@ public class ContextBaseTest {
         ctx.e6();
         assertEquals( "S2.S22.S222", ctx.logicalState() );
     }
-    
-
-    
 }

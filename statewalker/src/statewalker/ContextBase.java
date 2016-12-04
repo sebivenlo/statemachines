@@ -29,9 +29,13 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
                 this.initialMap.add( ( ( S ) aEnum ).getInitialState() );
             }
             nullState = ( ( S ) enums[ 0 ] ).getNullState();
-            this.enterState( nullState );
+            this.stack.push( nullState );
         } else {
             nullState = null;
+        }
+        final S initialState = nullState.getInitialState();
+        if ( initialState != null ) {
+            this.enterState( initialState );
         }
     }
 
@@ -55,9 +59,15 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
     @SafeVarargs
     @SuppressWarnings( "unchecked" )
     public final void addState( S... state ) {
-        for ( S cCState : state ) {
-            stack.push( cCState );
-            cCState.enter( ( C ) this );
+        for ( S childState : state ) {
+            S parent = stack.peek();
+            int parentId = parent.ordinal();
+            stack.push( childState );
+            childState.enter( ( C ) this );
+            if (parent.isInitialStateHistory()){
+                this.initialMap.set( parentId, childState );
+            }
+            
         }
     }
 
@@ -100,7 +110,6 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
 
     @SuppressWarnings( "unchecked" )
     private void leaveAndPop() {
-        System.out.println( "about to leave "+logicalState() );
         stack.peek().exit( ( C ) this );
         stack.pop();
     }
