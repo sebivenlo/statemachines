@@ -24,7 +24,5 @@ public class Context extends ContextBase<Context,Dev,State >{
     void e5 (){   getTopState().e5( this );  }
     void e6 (){   getTopState().e6( this );  }
     void e7 (){   getTopState().e7( this );  }
-
-    
     
 }

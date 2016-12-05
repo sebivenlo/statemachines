@@ -67,11 +67,11 @@ public class ContextBaseTest {
     public void testE4() {
         System.out.println( "==== e4" );
         ctx.e1();
-        assertTrue(ctx.isDebug());
+        assertTrue( ctx.isDebug() );
         ctx.e4();
         assertEquals( "S1.S12", ctx.logicalState() );
         ctx.setDebug( false );
-        assertFalse(ctx.isDebug());
+        assertFalse( ctx.isDebug() );
         ctx.e4();
         assertEquals( "S1.S12", ctx.logicalState() );
     }
@@ -134,7 +134,4 @@ public class ContextBaseTest {
         ctx.leaveSubStates( S21 );
     }
 
-    private void leaveSubStates( S s ) {
-        throw new UnsupportedOperationException( "Not supported yet." ); //To change body of generated methods, choose Tools | Templates.
-    }
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package statewalker;
 
 import org.junit.Test;
@@ -13,29 +8,36 @@ import static org.junit.Assert.*;
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
  */
 public class StateBaseTest {
-    StateBase sb = new StateBase(){
-        @Override
-        public int ordinal() {
-            return 0;
-        }
+    interface S extends StateBase<TestContext, Dev, S> {
+    }
+     enum TestState implements  S{
+         X;
 
-        @Override
-        public StateBase getNullState() {
+         @Override
+        public TestState getNullState() {
             return null;
         }
-    };
-    @SuppressWarnings("unchecked")
-    ContextBase cb = new ContextBase(new Device(){}, StateBase.class);
+    }
+    
+    static class TestContext extends ContextBase<TestContext,Dev,S>{
+
+        public TestContext( Dev device, Class stateClass ) {
+            super( device, stateClass );
+        }
+    }
+    
+    static class Dev implements Device<TestContext,Dev,S>{}
+    
+    S sb = TestState.X;
+    TestContext cb = new TestContext(new Dev(), TestState.class);
     /**
      * Only for coverage, the methods have empty bodies
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testSomeMethod() {
         assertNull(sb.getInitialState());
         assertFalse(sb.isInitialStateHistory());
         sb.enter(cb );
         sb.exit(cb);
     }
-    
 }

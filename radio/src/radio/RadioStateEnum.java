@@ -1,7 +1,6 @@
 
 package radio;
 
-import statewalker.ContextBase;
 import static radio.RadioStateEnum.*;
 /**
  *
@@ -87,6 +86,10 @@ enum RadioStateEnum implements RadioState {
             System.out.println( "in state  " + ctx.logicalState() + " ignored event stopAlarmButtonPressed." );
         }
 
-    }
+    };
 
+    @Override
+    public RadioState getNullState() {
+        return NULL;
+    }
 }
