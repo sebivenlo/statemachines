@@ -37,9 +37,19 @@ public class ContextBaseTest {
     Device dev2 = new Device() {
     };
     @SuppressWarnings( "unchecked" )
-    ContextBase cb = new ContextBase(dev,sb.getClass() );
+    ContextBase cb = new ContextBase(sb.getClass() ){
+        @Override
+        public Device getDevice() {
+            return dev;
+        }
+    };
     @SuppressWarnings( "unchecked" )
-    ContextBase cb2 = new ContextBase(dev,SB.SB.getClass() );
+    ContextBase cb2 = new ContextBase(SB.SB.getClass() ){
+        @Override
+        public Device getDevice() {
+            return dev2;
+        }
+    };
     
     /**
      * For coverage.
@@ -48,8 +58,7 @@ public class ContextBaseTest {
     @SuppressWarnings( "unchecked" )
     public void testSomeMethod() {
         assertSame(dev,cb.getDevice());
-        cb.setDevice( dev2);
-        assertNotSame(dev,cb.getDevice());
+        assertNotSame(dev,cb2.getDevice());
     }
     
 }

@@ -8,10 +8,18 @@ import statewalker.ContextBase;
  */
 public class RadioContext extends ContextBase<RadioContext, RadioDevice, RadioState> implements RadioOps {
 
+    final RadioDevice rdev;
     RadioContext( RadioDevice rdev ) {
-        super( rdev, RadioStateImpl.class );
+        super( RadioStateImpl.class );
+        this.rdev= rdev;
     }
 
+    @Override
+    public RadioDevice getDevice() {
+        return rdev;
+    }
+
+    
     public RadioContext(){
         this(new RadioDevice());
     }

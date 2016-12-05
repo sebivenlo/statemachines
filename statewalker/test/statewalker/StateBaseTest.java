@@ -19,17 +19,24 @@ public class StateBaseTest {
         }
     }
     
+    static class Dev implements Device<TestContext,Dev,S>{}
     static class TestContext extends ContextBase<TestContext,Dev,S>{
 
-        public TestContext( Dev device, Class stateClass ) {
-            super( device, stateClass );
+        public TestContext( Class stateClass ) {
+            super( stateClass );
         }
+
+        final Dev dev = new Dev();
+        @Override
+        public Dev getDevice() {
+            return dev;
+        }
+        
     }
     
-    static class Dev implements Device<TestContext,Dev,S>{}
     
     S sb = TestState.X;
-    TestContext cb = new TestContext(new Dev(), TestState.class);
+    TestContext cb = new TestContext( TestState.class);
     /**
      * Only for coverage, the methods have empty bodies
      */

@@ -10,19 +10,19 @@ import java.util.logging.Logger;
  * @param <D> Device for all operations
  * @param <S> State to maintain.
  */
-public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, S>, S extends StateBase<C, D, S>> {
+public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, S>, S extends StateBase<C, D, S>> {
 
     private final StateStack<S> stack = new StateStack<>( 6 );
-    private D device;
+    //private D device;
     private ArrayList<S> initialMap;
     private final S nullState;
     private boolean debug = false;
     private static final Logger LOGGER = Logger.getLogger( ContextBase.class.getCanonicalName() );
 
     @SuppressWarnings( "unchecked" )
-    public ContextBase( D device, Class<?> stateClass ) {
+    public ContextBase( Class<?> stateClass ) {
         //this();
-        this.device = device;
+        //this.device = device;
         if ( stateClass.isEnum() ) {
             Object[] enums = stateClass.getEnumConstants();
             this.initialMap = new ArrayList<>( enums.length );
@@ -42,10 +42,10 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
         }
     }
 
-    public final ContextBase setDevice( D device ) {
-        this.device = device;
-        return this;
-    }
+//    public final ContextBase setDevice( D device ) {
+//        this.device = device;
+//        return this;
+//    }
 
     @SafeVarargs
     public final void enterState( S... state ) {
@@ -122,9 +122,7 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
      *
      * @return the device
      */
-    public final D getDevice() {
-        return device;
-    }
+    public abstract D getDevice();
 
     /**
      * Get the super state of a state.

@@ -13,8 +13,8 @@ import statewalker.ContextBase;
  */
 public class Context extends ContextBase<Context,Dev,State >{
     
-    public Context( Dev device, Class<?> stateClass ) {
-        super( device, stateClass );
+    public Context( Class<?> stateClass ) {
+        super(  stateClass );
     }
     
     void e1 (){   getTopState().e1( this );  }
@@ -24,5 +24,12 @@ public class Context extends ContextBase<Context,Dev,State >{
     void e5 (){   getTopState().e5( this );  }
     void e6 (){   getTopState().e6( this );  }
     void e7 (){   getTopState().e7( this );  }
+
+    static Dev dev = new Dev();
+    
+    @Override
+    public Dev getDevice() {
+        return dev;
+    }
     
 }
