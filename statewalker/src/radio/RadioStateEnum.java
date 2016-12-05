@@ -2,17 +2,26 @@
 package radio;
 
 import statewalker.ContextBase;
-
+import static radio.RadioStateEnum.*;
 /**
  *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
  */
-enum RadioStateImpl implements RadioState {
+enum RadioStateEnum implements RadioState {
     NOT_POWERED {
+        @Override
+        public void powerOn( RadioContext ctx ) {
+            ctx.changeFromToState( "power plugged", this, POWERED );
+        }
         // TODO
         
     },
     POWERED {
+        @Override
+        public void enter( RadioContext ctx ) {
+            ctx.getDevice().amplifier( true );
+        }
+        
         // TODO
     },
     IDLE_MODE {
