@@ -11,3 +11,8 @@ gumballs/sen1_gumballnotes.html
 /workshop/build/
 /statewalker/dist/
 /statewalker/build/
+/clockradio/*.aux
+/clockradio/*.log
+/clockradio/clockdoc.pdf
+
+
