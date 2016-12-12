@@ -1,5 +1,8 @@
 package statewalker;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
@@ -12,6 +15,7 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
     StateStack<S> stack;
     protected StateStack<S> stateStack = new StateStack<>( 5 );
     protected D device;
+    protected Map<S, S> history = new HashMap<>();
 
     public ContextBase( D device ) {
         this.device = device;
@@ -34,6 +38,8 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
     @SuppressWarnings( "unchecked" )
     final public void addState( S... state ) {
         for ( S cCState : state ) {
+            S stackTop = stateStack.peek();
+            history.put(stackTop, cCState);
             stateStack.push( cCState );
             cCState.enter( ( C ) this );
         }
@@ -97,6 +103,13 @@ public class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, 
         System.out.println( "from logical state " + oldState + ", event '"
                 + event + "' to logical state "
                 + logicalState() );
+    }
+    
+    public S getHistoryStateFrom(S from, S initial){
+        if(!history.containsKey(from)){
+            return initial;
+        }
+        return history.get(from);
     }
 
     public String logicalState() {
