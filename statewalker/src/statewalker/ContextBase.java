@@ -1,12 +1,12 @@
 package statewalker;
 
-<<<<<<< HEAD
+
 import java.util.HashMap;
 import java.util.Map;
-=======
+
 import java.util.ArrayList;
 import java.util.logging.Logger;
->>>>>>> ac5ae922a2d56f8b9f7b4bfaad5d156ff66a25d4
+
 
 /**
  *
@@ -17,19 +17,15 @@ import java.util.logging.Logger;
  */
 public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, S>, S extends StateBase<C, D, S>> {
 
-<<<<<<< HEAD
-    StateStack<S> stack;
-    protected StateStack<S> stateStack = new StateStack<>( 5 );
-    protected D device;
-    protected Map<S, S> history = new HashMap<>();
-=======
+
     private final StateStack<S> stack = new StateStack<>( 6 );
     //private D device;
     private ArrayList<S> initialMap;
     private final S nullState;
     private boolean debug = false;
     private static final Logger LOGGER = Logger.getLogger( ContextBase.class.getCanonicalName() );
->>>>>>> ac5ae922a2d56f8b9f7b4bfaad5d156ff66a25d4
+    protected D device;
+    protected Map<S, S> history = new HashMap<>();
 
     @SuppressWarnings( "unchecked" )
     public ContextBase( Class<?> stateClass ) {
@@ -73,25 +69,16 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
 
     @SafeVarargs
     @SuppressWarnings( "unchecked" )
-<<<<<<< HEAD
-    final public void addState( S... state ) {
-        for ( S cCState : state ) {
-            S stackTop = stateStack.peek();
-            history.put(stackTop, cCState);
-            stateStack.push( cCState );
-            cCState.enter( ( C ) this );
-=======
     public final void addState( S... state ) {
         for ( S childState : state ) {
             S parent = stack.peek();
             int parentId = parent.ordinal();
+            history.put(S, cCState);
             stack.push( childState );
             childState.enter( ( C ) this );
             if ( parent.isInitialStateHistory() ) {
                 this.initialMap.set( parentId, childState );
             }
-
->>>>>>> ac5ae922a2d56f8b9f7b4bfaad5d156ff66a25d4
         }
     }
 
