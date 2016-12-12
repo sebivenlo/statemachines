@@ -73,7 +73,7 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
         for ( S childState : state ) {
             S parent = stack.peek();
             int parentId = parent.ordinal();
-            history.put(S, cCState);
+            history.put(parent, childState);
             stack.push( childState );
             childState.enter( ( C ) this );
             if ( parent.isInitialStateHistory() ) {
