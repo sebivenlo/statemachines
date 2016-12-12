@@ -8,7 +8,17 @@ import statestack.ContextBase;
  */
 public enum ClockRadioStateEnum implements ClockRadioState {
     NOT_POWERED {
+        @Override
+        public void exit( ContextBase ctx ) {
+            super.exit( ctx ); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void enter( ContextBase ctx ) {
+            super.enter( ctx ); //To change body of generated methods, choose Tools | Templates.
+        }
         // TODO
+        
     },
     POWERED {
         @Override

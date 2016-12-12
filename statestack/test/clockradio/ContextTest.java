@@ -19,7 +19,7 @@ public class ContextTest {
 
     @Before
     public void setup() {
-        context = new ClockRadioContext();
+        context = new ClockRadioContext(new ClockRadioDevice());
     }
 
     @Test

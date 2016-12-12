@@ -1,7 +1,6 @@
 
 package radio;
 
-import statewalker.ContextBase;
 import statewalker.StateBase;
 
 /**
@@ -16,12 +15,9 @@ interface RadioState extends StateBase<RadioContext,RadioDevice,RadioState>{
     default void alarmButtonPressed(RadioContext ctx) {ctx.superState(this).alarmButtonPressed(ctx);};
     default void alarmTimeReached(RadioContext ctx)   {ctx.superState(this).alarmTimeReached(ctx);};
     default void stopAlarmButtonPressed(RadioContext ctx) {ctx.superState(this).stopAlarmButtonPressed(ctx);};
-
-    
+  
     @Override
     default void exit( RadioContext ctx ){}
-
-    
     @Override
     default void enter( RadioContext ctx ){};
     

@@ -7,8 +7,11 @@ package statestack;
 
 /**
  *
- * @author Sander
+ * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
+ * @param <C> Context
+ * @param <D> Device
+ * @param <S> StateBase
  */
-public interface DeviceBase {
+public interface  Device<C extends ContextBase<C,D,S>,D extends Device<C,D,S>, S extends StateBase<C,D,S>> {
     
 }

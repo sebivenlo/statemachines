@@ -7,14 +7,20 @@ package statestack;
 
 /**
  * Primary functions for a state machine
- * 
- * Define a default method that returns void.
- * 
- * Example: default void accelerate(ContextBase<CCState, Device> ctx){ ctx.superState( this ).accelerate( ctx );};
- * 
- * @author Sander
+ *
+ * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
+ * @param <C> Context
+ * @param <D> Device
+ * @param <S> StateBase
  */
-public interface StateBase {
-    default void enter(ContextBase ctx){}//System.out.println( "entering state "+this.toString() );};
-    default void exit(ContextBase ctx){}//System.out.println( "leaving state "+this.toString() );};
+public interface StateBase<C extends ContextBase<C,D,S>,D extends Device<C,D,S>, S extends StateBase<C,D,S>> {
+    default void enter(C ctx){}//System.out.println( "entering state "+this.toString() );};
+
+    /**
+     *
+     * @param ctx
+     */
+    default void exit(C ctx){}//System.out.println( "leaving state "+this.toString() );};
+       
+    
 }

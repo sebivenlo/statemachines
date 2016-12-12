@@ -1,7 +1,6 @@
 **/*~
 **/private/**
 **/.jacocoverage/**
-**/jacoexec*
 /statestack/build/
 /gumballs/solution/olifantysballs/build/
 gumballs/sen1_gumballnotes.html
@@ -11,3 +10,9 @@ gumballs/sen1_gumballnotes.html
 /workshop/build/
 /statewalker/dist/
 /statewalker/build/
+/statewalker/jaco-exec*
+/clockradio/*.aux
+/clockradio/*.log
+/clockradio/clockdoc.pdf
+
+
