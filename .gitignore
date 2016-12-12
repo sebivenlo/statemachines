@@ -7,20 +7,7 @@
 gumballs/sen1_gumballnotes.html
 /mavenstatestack/nbproject/
 /mavenstatestack/target/
-
-/workshop/nbproject/private/
-workshop/build/
-/workshop/nbbuild/
 /workshop/dist/
-/workshop/nbdist/
-/workshop/nbactions.xml
-/workshop/nb-configuration.xml
-
-# Class Files #
-/workshop/*.class
-
-
-# Package Files #
-/workshop/*.jar
-/workshop/*.war
-/workshop/*.ear
+/workshop/build/
+/statewalker/dist/
+/statewalker/build/
