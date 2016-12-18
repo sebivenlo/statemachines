@@ -1,10 +1,14 @@
 package statewalker;
 
 /**
+ * Stack definition made package private.
+ *
+ * This artefact of a hierarchy is left in because of the tests that come with
+ * it, to make complete test code coverage less work.
  *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
  */
-public interface Stack<E> {
+interface Stack<E> {
 
     boolean isEmpty();
 

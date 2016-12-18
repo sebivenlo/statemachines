@@ -58,17 +58,17 @@ enum RadioStateImpl implements RadioState {
         }
 
         @Override
-        public void idleButtonPressed( RadioContext ctx ) {
+        public void idleButtonAction( RadioContext ctx ) {
             System.out.println( "in state  " + ctx.logicalState() + " ignored event idleButtonPressed." );
         }
 
         @Override
-        public void radioButtonPressed( RadioContext ctx ) {
+        public void radioButtonAction( RadioContext ctx ) {
             System.out.println( "in state  " + ctx.logicalState() + " ignored event radioButtonPressed." );
         }
 
         @Override
-        public void alarmButtonPressed( RadioContext ctx ) {
+        public void alarmButtonAction( RadioContext ctx ) {
             System.out.println( "in state  " + ctx.logicalState() + " ignored event alarmButtonPressed." );
         }
 
@@ -78,7 +78,7 @@ enum RadioStateImpl implements RadioState {
         }
 
         @Override
-        public void stopAlarmButtonPressed( RadioContext ctx ) {
+        public void stopAlarmButtonAction( RadioContext ctx ) {
             System.out.println( "in state  " + ctx.logicalState() + " ignored event stopAlarmButtonPressed." );
         }
 

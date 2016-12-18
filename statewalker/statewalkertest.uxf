@@ -525,7 +525,7 @@ layer=2</panel_attributes>
       <w>286</w>
       <h>253</h>
     </coordinates>
-    <panel_attributes>S33* is a "complex" state,
+    <panel_attributes>S33 is a "complex" state,
 sub state of S3 and super of
 S331 and S332
 The initial state S331 is
@@ -560,5 +560,17 @@ but is a use case we want to test</panel_attributes>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;70.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>396</x>
+      <y>176</y>
+      <w>154</w>
+      <h>44</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+e12</panel_attributes>
+    <additional_attributes>120.0;20.0;10.0;20.0</additional_attributes>
   </element>
 </diagram>

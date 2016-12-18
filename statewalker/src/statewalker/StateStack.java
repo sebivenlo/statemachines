@@ -3,7 +3,8 @@ package statewalker;
 import java.util.Arrays;
 
 /**
- *
+ * Simple array base stack with extra methods for state walker.
+ * 
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
  */
 class StateStack<E> implements Stack<E> {

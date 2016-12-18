@@ -35,18 +35,18 @@ public class RadioContext extends ContextBase<RadioContext, RadioDevice, RadioSt
     }
 
     @Override
-    public void idleButtonPressed() {
-        getTopState().idleButtonPressed( this );
+    public void idleButtonAction() {
+        getTopState().idleButtonAction( this );
     }
 
     @Override
-    public void radioButtonPressed() {
-        getTopState().radioButtonPressed( this );
+    public void radioButtonAction() {
+        getTopState().radioButtonAction( this );
     }
 
     @Override
-    public void alarmButtonPressed() {
-        getTopState().alarmButtonPressed( this );
+    public void alarmButtonAction() {
+        getTopState().alarmButtonAction( this );
     }
 
     @Override
@@ -55,7 +55,7 @@ public class RadioContext extends ContextBase<RadioContext, RadioDevice, RadioSt
     }
 
     @Override
-    public void stopAlarmButtonPressed() {
-        getTopState().stopAlarmButtonPressed( this );
+    public void stopAlarmButtonAction() {
+        getTopState().stopAlarmButtonAction( this );
     }
 }

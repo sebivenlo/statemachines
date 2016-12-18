@@ -12,9 +12,9 @@ package radio;
 public interface RadioOps {
      void powerOn() ;
     void powerOff();
-     void idleButtonPressed();
-     void radioButtonPressed();
-     void alarmButtonPressed();
+     void idleButtonAction();
+     void radioButtonAction();
+     void alarmButtonAction();
      void alarmTimeReached();
-     void stopAlarmButtonPressed();
+     void stopAlarmButtonAction();
 }

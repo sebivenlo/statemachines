@@ -55,8 +55,9 @@ enum S implements State {
             ctx.changeFromToState( "e7", this, S222 );
         }
     }, S222,
+    S3, S31, S32, S33, S331, S332,
     /**
-     * Hull have trivial (empty bodies) implementation for all event methods.
+     * Null has trivial (empty bodies) implementations for all event methods.
      */
     NULL {
         @Override
@@ -132,10 +133,23 @@ enum S implements State {
     /**
      * Whether or not a state maintains history of its sub state.
      *
-     * @return
+     * @return true if the state maintains history of its direct (shallow) sub
+     * state.
      */
     @Override
     public boolean isInitialStateHistory() {
+        return isHist.contains( this );
+    }
+
+    private static final EnumSet<S> isDeepHist = EnumSet.<S>of( S3 );
+    /**
+     * Whether or not a state maintains history of its sub state.
+     *
+     * @return true if the state maintains history of its direct (shallow) sub
+     * state.
+     */
+    @Override
+    public boolean isInitialStateDeepHistory() {
         return isHist.contains( this );
     }
 }

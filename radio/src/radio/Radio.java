@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package radio;
 
 /**
@@ -24,25 +19,28 @@ public class Radio implements RadioOps{
     }
 
     @Override
-    public void idleButtonPressed() {
-        rctx.idleButtonPressed();
+    public void idleButtonAction() {
+        rctx.idleButtonAction();
     }
 
     @Override
-    public void radioButtonPressed() {
-        rctx.radioButtonPressed();
+    public void radioButtonAction() {
+        rctx.radioButtonAction();
     }
 
-    public void alarmButtonPressed() {
-        rctx.alarmButtonPressed();
+    @Override
+    public void alarmButtonAction() {
+        rctx.alarmButtonAction();
     }
 
+    @Override
     public void alarmTimeReached() {
         rctx.alarmTimeReached();
     }
 
-    public void stopAlarmButtonPressed() {
-        rctx.stopAlarmButtonPressed();
+    @Override
+    public void stopAlarmButtonAction() {
+        rctx.stopAlarmButtonAction();
     }
 
 }

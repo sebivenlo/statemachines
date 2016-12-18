@@ -1,6 +1,23 @@
 package statewalker;
 
 /**
+ * Methods that should be available in all states to make the state walker api
+ * work.
+ *
+ * Because (the current version of ) statewalker heavily relies the use of java
+ * {@code enum} types, we mandate the aspects of enum, namely {@code ordinal} to
+ * be implemented. This is automatic if the user also uses enum.
+ *
+ * Same for the "NULL" state, which is used as the catch all sate, put at the
+ * top (bottom in the stack) of the state hierarchy, to catch (as in implement)
+ * all event methods. All other methods provide a default implementation (Java 8
+ * needed) and need no override.
+ *
+ * The implementor of the implementing class is advised to add another level of
+ * inheritance with an interface extending this interface and give default
+ * implementations of enter and leave, then application specific. These
+ * implementations can be empty too, but should use the application specific
+ * context.
  *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
  * @param <C> Context
@@ -51,6 +68,19 @@ public interface StateBase<C extends ContextBase<C, D, S>, D extends Device<C, D
      * @return isHistory
      */
     default boolean isInitialStateHistory() {
+        return false;
+    }
+
+    /**
+     * Is the initial state actually a deep history state?. If an initial state has
+     * the role of history state, the child states and all of the child's
+     * sub states, recursively, are remembered, so that when the state machine
+     * returns to this state, the remembered sub states are also resumed.
+     * 
+     * 
+     * @return isHistory
+     */
+    default boolean isInitialStateDeepHistory() {
         return false;
     }
 
