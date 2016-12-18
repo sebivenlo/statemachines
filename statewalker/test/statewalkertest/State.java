@@ -43,6 +43,4 @@ public interface State extends StateBase<Context, Dev, State> {
     @Override
     default void enter( Context ctx ) {
     }
-;
-
 }
