@@ -4,7 +4,7 @@ package statewalkertest;
  *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
  */
-public enum StateEnum implements State{
+public enum StateEnum implements State {
 
     NULL;
 
@@ -12,5 +12,5 @@ public enum StateEnum implements State{
     public State getNullState() {
         return NULL;
     }
-    
+
 }

@@ -68,15 +68,16 @@ class StateStack<E> implements Stack<E> {
 
     /**
      * Peek one below top, if any.
+     *
      * @param level to peek below top.
      */
     public E peekDownFrom( E reference, int level ) {
         int t = top;
-        while (t > 0 && storage[t] != reference) {
+        while ( t > 0 && storage[ t ] != reference ) {
             t--;
         }
-        int k = t -level ;
-        if ( k >= 0  && k < storage.length ) {
+        int k = t - level;
+        if ( k >= 0 && k < storage.length ) {
             return storage[ k ];
         } else {
             return null;
@@ -136,13 +137,13 @@ class StateStack<E> implements Stack<E> {
     }
 
     String logicalState() {
-        String glue ="";
-        String result="";
-        for ( int i=1; i<= top; i++) {
-            result +=glue+storage[i];
-            glue=".";
+        String glue = "";
+        String result = "";
+        for ( int i = 1; i <= top; i++ ) {
+            result += glue + storage[ i ];
+            glue = ".";
         }
         return result;
     }
-    
+
 }

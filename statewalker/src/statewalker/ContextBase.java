@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, S>, S extends StateBase<C, D, S>> {
 
     private final StateStack<S> stack = new StateStack<>( 6 );
-    //private D device;
     private ArrayList<S> initialMap;
     private final S nullState;
     private boolean debug = false;
@@ -21,8 +20,6 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
 
     @SuppressWarnings( "unchecked" )
     public ContextBase( Class<?> stateClass ) {
-        //this();
-        //this.device = device;
         if ( stateClass.isEnum() ) {
             Object[] enums = stateClass.getEnumConstants();
             this.initialMap = new ArrayList<>( enums.length );
@@ -41,11 +38,6 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
             }
         }
     }
-
-//    public final ContextBase setDevice( D device ) {
-//        this.device = device;
-//        return this;
-//    }
 
     @SafeVarargs
     public final void enterState( S... state ) {
@@ -204,5 +196,4 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
         debug = d;
         return ( C ) this;
     }
-
 }

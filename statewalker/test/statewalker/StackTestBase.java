@@ -24,7 +24,7 @@ public abstract class StackTestBase {
     public void an_new_stack_is_empty() {
         Stack<String> s = createInstance();
         assertTrue( "Fresh stack is empty", s
-                    .isEmpty() );
+                .isEmpty() );
     }
 
     @Test
@@ -40,7 +40,7 @@ public abstract class StackTestBase {
         String h = "Hi";
         s.push( h );
         assertSame( "Hi on stack, same", h, s
-                    .peek() );
+                .peek() );
     }
 
     @Test
@@ -49,7 +49,7 @@ public abstract class StackTestBase {
         String h = "Hi";
         s.push( h );
         assertSame( "Hi on stack, same", h, s
-                    .pop() );
+                .pop() );
         assertTrue( "empty?", s.isEmpty() );
 
     }
@@ -78,7 +78,7 @@ public abstract class StackTestBase {
         System.out.println( "received = " + Arrays
                 .deepToString( received ) );
         assertArrayEquals( "order check ", testData,
-                           received );
+                received );
     }
 
     /**

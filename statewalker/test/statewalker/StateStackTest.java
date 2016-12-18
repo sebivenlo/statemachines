@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package statewalker;
 
 import static org.junit.Assert.assertEquals;
@@ -76,10 +71,10 @@ public class StateStackTest extends StackTestBase {
         assertTrue( "In Stack", stack.contains( testData[ 2 ] ) );
 
     }
-    
+
     @Test
-    public void testHas(){
-    
+    public void testHas() {
+
         StateStack<String> stack = ( StateStack<String> ) createInstance();
         String[] testData = { "A", "B", "C", "D", "E" };
         for ( String s : testData ) {
@@ -89,57 +84,57 @@ public class StateStackTest extends StackTestBase {
     }
 
     @Test
-    public void testPeekDown(){
-    
+    public void testPeekDown() {
+
         StateStack<String> stack = ( StateStack<String> ) createInstance();
         String[] testData = { "A", "B", "C", "D", "E" };
         for ( String s : testData ) {
             stack.push( s );
         }
-        assertEquals( "found", "C",stack.peekDownFrom( "D", 1) );
+        assertEquals( "found", "C", stack.peekDownFrom( "D", 1 ) );
     }
 
     @Test
-    public void testPeekDownNotFound(){
-    
+    public void testPeekDownNotFound() {
+
         StateStack<String> stack = ( StateStack<String> ) createInstance();
         String[] testData = { "A", "B", "C", "D", "E" };
         for ( String s : testData ) {
             stack.push( s );
         }
-        assertNull( "Not found", stack.peekDownFrom( "A", 1) );
-    }
-    
-    @Test
-    public void testPeekUp(){
-       StateStack<String> stack = ( StateStack<String> ) createInstance();
-        String[] testData = { "A", "B", "C", "D", "E" };
-        for ( String s : testData ) {
-            stack.push( s );
-        }
-        assertEquals( "found", "E",stack.peekDownFrom( "D", -1) );
-    
+        assertNull( "Not found", stack.peekDownFrom( "A", 1 ) );
     }
 
     @Test
-    public void testPeekUpNotFound(){
-       StateStack<String> stack = ( StateStack<String> ) createInstance();
+    public void testPeekUp() {
+        StateStack<String> stack = ( StateStack<String> ) createInstance();
         String[] testData = { "A", "B", "C", "D", "E" };
         for ( String s : testData ) {
             stack.push( s );
         }
-        assertNull( "Notfound",stack.peekDownFrom( "D", -2) );
-    
+        assertEquals( "found", "E", stack.peekDownFrom( "D", -1 ) );
+
     }
 
     @Test
-    public void testPeekUpOverTop(){
-       StateStack<String> stack =  new StateStack<String>(5);
+    public void testPeekUpNotFound() {
+        StateStack<String> stack = ( StateStack<String> ) createInstance();
         String[] testData = { "A", "B", "C", "D", "E" };
         for ( String s : testData ) {
             stack.push( s );
         }
-        assertNull( "Notfound",stack.peekDownFrom( "E", -1) );
-    
+        assertNull( "Notfound", stack.peekDownFrom( "D", -2 ) );
+
+    }
+
+    @Test
+    public void testPeekUpOverTop() {
+        StateStack<String> stack = new StateStack<String>( 5 );
+        String[] testData = { "A", "B", "C", "D", "E" };
+        for ( String s : testData ) {
+            stack.push( s );
+        }
+        assertNull( "Notfound", stack.peekDownFrom( "E", -1 ) );
+
     }
 }

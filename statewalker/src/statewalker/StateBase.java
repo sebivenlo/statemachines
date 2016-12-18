@@ -1,8 +1,3 @@
- /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package statewalker;
 
 /**
@@ -64,7 +59,7 @@ public interface StateBase<C extends ContextBase<C, D, S>, D extends Device<C, D
      * 'implements' all event methods with empty bodies, or at least methods
      * that do not all super.method nor reach down in the stack.
      *
-     * @return the null state associated with this implementation. 
+     * @return the null state associated with this implementation.
      */
     S getNullState();
 }
