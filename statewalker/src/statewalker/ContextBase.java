@@ -1,7 +1,12 @@
 package statewalker;
 
+
+import java.util.HashMap;
+import java.util.Map;
+
 import java.util.ArrayList;
 import java.util.logging.Logger;
+
 
 /**
  *
@@ -12,11 +17,14 @@ import java.util.logging.Logger;
  */
 public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, S>, S extends StateBase<C, D, S>> {
 
+
     private final StateStack<S> stack = new StateStack<>( 6 );
     private ArrayList<S> initialMap;
     private final S nullState;
     private boolean debug = false;
     private static final Logger LOGGER = Logger.getLogger( ContextBase.class.getCanonicalName() );
+    protected D device;
+    protected Map<S, S> history = new HashMap<>();
 
     @SuppressWarnings( "unchecked" )
     public ContextBase( Class<?> stateClass ) {
@@ -57,12 +65,12 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
         for ( S childState : state ) {
             S parent = stack.peek();
             int parentId = parent.ordinal();
+            history.put(parent, childState);
             stack.push( childState );
             childState.enter( ( C ) this );
             if ( parent.isInitialStateHistory() ) {
                 this.initialMap.set( parentId, childState );
             }
-
         }
     }
 
@@ -165,6 +173,13 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
                     + event + "' to "
                     + logicalState() );
         }
+    }
+    
+    public S getHistoryStateFrom(S from, S initial){
+        if(!history.containsKey(from)){
+            return initial;
+        }
+        return history.get(from);
     }
 
     /**

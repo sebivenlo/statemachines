@@ -1,0 +1,23 @@
+= Notes on Hombergs solution
+
+Homberg solution uses and array "initialMap" with states to find the initial/last sub state from a specific state.
+To look up a sub state he uses the ordinal of the current state (because it is an enum) as index.
+
+When transitioning between states this "initialMap" is updated.
+
+== The use of SuppressWarnings
+The use of SuppressWarnings is needed because when getting all the enums you _asume_ that they are of type StateBase.
+Whenever this assumption fails you do nothing. Why? You can not use the framework but the called intended to use it. So I would prefer to crash/throw an exception.
+
+== The use of final static map in implemented states
+This map was has the same meaning and name as the earlier mentioned "initialMap".
+Initialising is different, it happens in a static block.
+
+[source, java]
+----
+private static final Map<RadioStateImpl, RadioState> initialMap = new EnumMap<>( RadioStateImpl.class );
+
+static {
+        initialMap.put( POWERED, RADIO_MODE );
+}
+----

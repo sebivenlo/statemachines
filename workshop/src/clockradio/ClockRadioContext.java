@@ -15,11 +15,6 @@ public class ClockRadioContext extends ContextBase<ClockRadioState, ClockRadioDe
         addState(POWERED);
         System.out.println("current state is: " + stateStack.peek().toString());
     }
-
-    @Override
-    public ClockRadioDevice getDevice() {
-        return device;
-    }
     
     public void powerOn() {
         stateStack.peek().powerOn(this);
@@ -43,6 +38,10 @@ public class ClockRadioContext extends ContextBase<ClockRadioState, ClockRadioDe
     
     public void stopAlarmButtonPressed() {
         stateStack.peek().stopAlarmButtonPressed(this);
+    }
+    
+    public void alarmTimeReached() {
+        stateStack.peek().alarmTimeReached(this);
     }
 
 }

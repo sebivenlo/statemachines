@@ -74,6 +74,12 @@ In this new design, we can identify the following responsibilities:
 |Devices
 |* Any event that a user or program sends to the state machine framework, should be coming in through the Device.
 * Any event coming out of the state machine framework should be coming out through the Device.
+
+|StateStack
+|* Keeps track of current state.
+
+|StateHisory
+|* Keeps a history of states.
 |===
 
 == Solving problems the "Head First" way

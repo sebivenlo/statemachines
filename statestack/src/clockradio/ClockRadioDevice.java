@@ -5,12 +5,12 @@
  */
 package clockradio;
 
-import statestack.DeviceBase;
+import statestack.Device;
 
 /**
  *
  * @author Jeroen (GitHub: jbeulen)
  */
-public class ClockRadioDevice implements DeviceBase {
+public class ClockRadioDevice implements Device<ClockRadioContext,ClockRadioDevice,ClockRadioState> {
     
 }

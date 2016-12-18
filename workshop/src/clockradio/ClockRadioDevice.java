@@ -20,4 +20,6 @@ public class ClockRadioDevice implements DeviceBase {
     public void stopBuzzing() {
         System.out.println("I will be quiet now....");
     }
+    
+    public void radio(boolean state){}
 }

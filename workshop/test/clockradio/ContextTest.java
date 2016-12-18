@@ -49,6 +49,13 @@ public class ContextTest {
         assertEquals( "Playing radio", "POWERED.RADIO_MODE", context.logicalState() );
     }
     
+    @Test
+    public void playAlarm(){
+        context.alarmButtonPressed();
+        context.alarmTimeReached();
+        assertEquals( "Playing alarm", "POWERED.ALARM_MODE.ALARM_BUZZING", context.logicalState() );
+    }
+    
     @Test(expected = IllegalArgumentException.class)
     public void forceStateException(){
         context.leaveState( ClockRadioStateEnum.NOT_POWERED);
