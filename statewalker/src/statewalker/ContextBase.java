@@ -91,7 +91,7 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
     @SuppressWarnings( "unchecked" )
     public final void leaveSubStates( S state ) {
         if ( !stack.has( state ) ) {
-            throw new IllegalArgumentException( "Cannor leave state '" + state
+            throw new IllegalArgumentException( "Cannot leave state '" + state
                     + "'because it is not active" );
         }
         S topState;
@@ -175,11 +175,11 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
         }
     }
     
-    public S getHistoryStateFrom(S from, S initial){
-        if(!history.containsKey(from)){
+    public S getHistoryStateFrom( S from, S initial ){
+        if( !history.containsKey( from ) ){
             return initial;
         }
-        return history.get(from);
+        return history.get( from );
     }
 
     /**
