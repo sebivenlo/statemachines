@@ -148,6 +148,12 @@ public class ContextBaseTest {
         assertEquals("S1.S11",ctx.logicalState());
         ctx.e9();
         assertEquals("S3.S33.S332",ctx.logicalState());
+        ctx.e10();
+        ctx.e10();
+        assertEquals("S3.S32",ctx.logicalState());
+        ctx.e12();
+        ctx.e9();
+        assertEquals("S3.S32",ctx.logicalState());
         
     }
 

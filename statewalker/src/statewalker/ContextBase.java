@@ -114,10 +114,7 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
             List<S> childState = getFirstChild( state );
             this.deepHistoryMap.set( state.ordinal(), childState );
         } else if ( state.isInitialStateDeepHistory() ) {
-            System.out.println( "deep hist state=" + state );
-            System.out.println( getChildren( state ) );
             deepHistoryMap.set( state.ordinal(), getChildren( state ) );
-            System.out.println( "deep for " + state + "=" + deepHistoryMap.get( state.ordinal() ) );
         }
         leaveSubStates( state );
         leaveAndPop();
