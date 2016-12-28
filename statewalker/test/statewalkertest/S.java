@@ -33,6 +33,11 @@ enum S implements State {
         public void e4( Context ctx ) {
             ctx.innerTransition( "e4", this, S12 );
         }
+
+        @Override
+        public void e9( Context ctx ) {
+            ctx.changeFromToState( "e4", this, S3 );
+        }
     }, S2 {
         @Override
         public void e5( Context ctx ) {
@@ -55,7 +60,29 @@ enum S implements State {
             ctx.changeFromToState( "e7", this, S222 );
         }
     }, S222,
-    S3, S31, S32, S33, S331, S332,
+    S3{
+    
+        @Override
+        public void e12( Context ctx ) {
+            ctx.changeFromToState( "e12", this, S1 );
+        }
+    }, S31 {
+        @Override
+        public void e10( Context ctx ) {
+            ctx.changeFromToState( "e10", this, S32 );
+        }
+    }, S32{
+        @Override
+        public void e10( Context ctx ) {
+            ctx.changeFromToState( "e10", this, S33 );
+        }
+    }, S33{
+        @Override
+        public void e10( Context ctx ) {
+            ctx.changeFromToState( "e10", this, S31 );
+        }
+    
+    }, S331, S332,
     /**
      * Null has trivial (empty bodies) implementations for all event methods.
      */
@@ -116,6 +143,8 @@ enum S implements State {
         initialMap.put( S1, S11 );
         initialMap.put( S2, S21 );
         initialMap.put( S22, S221 );
+        initialMap.put( S3, S31 );
+        initialMap.put( S33, S331 );
     }
 
     /**
@@ -142,6 +171,7 @@ enum S implements State {
     }
 
     private static final EnumSet<S> isDeepHist = EnumSet.<S>of( S3 );
+
     /**
      * Whether or not a state maintains history of its sub state.
      *

@@ -40,6 +40,26 @@ public class Context extends ContextBase<Context, Dev, State> {
         getTopState().e7( this );
     }
 
+    void e8() {
+        getTopState().e8( this );
+    }
+
+    void e9() {
+        getTopState().e9( this );
+    }
+
+    void e10() {
+        getTopState().e10( this );
+    }
+
+    void e11() {
+        getTopState().e11( this );
+    }
+
+    void e12() {
+        getTopState().e12( this );
+    }
+
     static Dev dev = new Dev();
 
     @Override

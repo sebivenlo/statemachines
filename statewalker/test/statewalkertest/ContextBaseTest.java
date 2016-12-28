@@ -118,6 +118,21 @@ public class ContextBaseTest {
     }
 
     @Test
+    public void testS3() {
+        ctx.e1();
+        assertEquals("S1.S11",ctx.logicalState());
+        ctx.e9();
+        assertEquals("S3.S31",ctx.logicalState());
+        ctx.e10();
+        assertEquals("S3.S32",ctx.logicalState());
+        ctx.e12();
+        assertEquals("S1.S11",ctx.logicalState());
+
+        ctx.e9();
+        assertEquals("S3.S32",ctx.logicalState());
+    }
+
+    @Test
     public void testGetFirstChild() {
         ctx.e1();
         assertEquals( S11, ctx.getFirstChild( S1 ) );
