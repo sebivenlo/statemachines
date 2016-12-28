@@ -46,7 +46,7 @@ public class StateBaseTest {
      * Only for coverage, the methods have empty bodies
      */
     @Test
-    public void testSomeMethod() {
+    public void coverageComplete() {
         assertNull( sb.getInitialState() );
         assertFalse( sb.isInitialStateHistory() );
         assertFalse( sb.isInitialStateDeepHistory() );

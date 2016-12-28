@@ -131,6 +131,26 @@ enum S implements State {
         }
 
         @Override
+        public void e8( Context ctx ) {
+        }
+
+        @Override
+        public void e9( Context ctx ) {
+        }
+
+        @Override
+        public void e10( Context ctx ) {
+        }
+
+        @Override
+        public void e11( Context ctx ) {
+        }
+
+        @Override
+        public void e12( Context ctx ) {
+        }
+
+        @Override
         public void exit( Context ctx ) {
         }
 
