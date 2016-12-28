@@ -1,5 +1,6 @@
 package statewalker;
 
+import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -135,6 +136,17 @@ public class StateStackTest extends StackTestBase {
             stack.push( s );
         }
         assertNull( "Notfound", stack.peekDownFrom( "E", -1 ) );
-
+    }
+    
+    @Test
+    public void testAbove(){
+        StateStack<String> stack = new StateStack<String>( 5 );
+        String[] testData = { "A", "B", "C", "D", "E" };
+        for ( String s : testData ) {
+            stack.push( s );
+        }
+        ArrayList<String> store = new ArrayList<>();
+        assertTrue(stack.above( "E", store ).isEmpty());
+        assertTrue("not empty",stack.above( "Z", store ).isEmpty());
     }
 }

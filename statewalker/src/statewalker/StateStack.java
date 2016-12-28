@@ -93,13 +93,14 @@ class StateStack<E> implements Stack<E> {
     public List<E> above( E reference, List<E> store ) {
         int t = top;
         store.clear();
-        while ( t > 0 && storage[ t ] != reference ) {
+        while ( t >= 0 && storage[ t ] != reference ) {
             t--;
-            System.out.println( "t = " + t + " storage[t] = " + storage[ t ] );
         }
-        t++;
-        for ( ; t <= top; t++ ) {
-            store.add( storage[ t ] );
+        if ( t >= 0 ) {
+            t++;
+            for ( ; t <= top; t++ ) {
+                store.add( storage[ t ] );
+            }
         }
         return store;
     }

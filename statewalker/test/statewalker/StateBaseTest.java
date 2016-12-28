@@ -49,6 +49,7 @@ public class StateBaseTest {
     public void testSomeMethod() {
         assertNull( sb.getInitialState() );
         assertFalse( sb.isInitialStateHistory() );
+        assertFalse( sb.isInitialStateDeepHistory() );
         sb.enter( cb );
         sb.exit( cb );
     }

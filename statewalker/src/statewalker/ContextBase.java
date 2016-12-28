@@ -59,10 +59,11 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
         S topState = stack.peek();
 
         List<S> hist = deepHistoryMap.get( topState.ordinal() );
-        if ( hist.size() > 0 && hist.get( 0 ) != null ) {
-            for ( S s : hist ) {
-                addState( s );
+        for ( S s : hist ) {
+            if ( s == null ) {
+                break;
             }
+            addState( s );
         }
     }
 
@@ -209,7 +210,8 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
     }
 
     /**
-     * Get the (current) child states of a parent state. 
+     * Get the (current) child states of a parent state.
+     *
      * @param parent of the children
      * @return the children in a list.
      */
@@ -219,6 +221,7 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
 
     /**
      * Is debug set.
+     *
      * @return true is debugging.
      */
     public boolean isDebug() {
