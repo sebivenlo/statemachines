@@ -1,10 +1,11 @@
 package statewalker;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Simple array base stack with extra methods for state walker.
- * 
+ *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
  */
 class StateStack<E> implements Stack<E> {
@@ -83,6 +84,24 @@ class StateStack<E> implements Stack<E> {
         } else {
             return null;
         }
+    }
+
+    @SuppressWarnings( "unchecked" )
+    static final Object[] EMPTY = new Object[ 0 ];
+
+    @SuppressWarnings( "unchecked" )
+    public List<E> above( E reference, List<E> store ) {
+        int t = top;
+        store.clear();
+        while ( t > 0 && storage[ t ] != reference ) {
+            t--;
+            System.out.println( "t = " + t + " storage[t] = " + storage[ t ] );
+        }
+        t++;
+        for ( ; t <= top; t++ ) {
+            store.add( storage[ t ] );
+        }
+        return store;
     }
 
     /**

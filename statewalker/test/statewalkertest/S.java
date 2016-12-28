@@ -18,6 +18,11 @@ enum S implements State {
         public void e2( Context ctx ) {
             ctx.changeFromToState( "e2", this, S2 );
         }
+
+        @Override
+        public void e8( Context ctx ) {
+            ctx.changeFromToState( "e8", this, S3,S32 );
+        }
     }, S1 {
         @Override
         public State getInitialState() {
@@ -36,7 +41,7 @@ enum S implements State {
 
         @Override
         public void e9( Context ctx ) {
-            ctx.changeFromToState( "e4", this, S3 );
+            ctx.changeFromToState( "e9", this, S3 );
         }
     }, S2 {
         @Override
@@ -82,7 +87,17 @@ enum S implements State {
             ctx.changeFromToState( "e10", this, S31 );
         }
     
-    }, S331, S332,
+    }, S331{
+        @Override
+        public void e11( Context ctx ) {
+            ctx.changeFromToState( "e11", this, S332 );
+        }
+    }, S332{
+        @Override
+        public void e11( Context ctx ) {
+            ctx.changeFromToState( "e11", this, S331);
+        }
+    },
     /**
      * Null has trivial (empty bodies) implementations for all event methods.
      */
@@ -180,6 +195,6 @@ enum S implements State {
      */
     @Override
     public boolean isInitialStateDeepHistory() {
-        return isHist.contains( this );
+        return isDeepHist.contains( this );
     }
 }

@@ -1,12 +1,10 @@
 package statewalker;
 
-
-import java.util.HashMap;
-import java.util.Map;
-
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
-
 
 /**
  *
@@ -17,27 +15,31 @@ import java.util.logging.Logger;
  */
 public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, S>, S extends StateBase<C, D, S>> {
 
-
     private final StateStack<S> stack = new StateStack<>( 6 );
-    private ArrayList<S> initialMap;
+    //private final List<S> initialMap;
     private final S nullState;
     private boolean debug = false;
     private static final Logger LOGGER = Logger.getLogger( ContextBase.class.getCanonicalName() );
     protected D device;
-    protected Map<S, S> history = new HashMap<>();
+    private final List<List<S>> deepHistoryMap;
 
     @SuppressWarnings( "unchecked" )
     public ContextBase( Class<?> stateClass ) {
         if ( stateClass.isEnum() ) {
             Object[] enums = stateClass.getEnumConstants();
-            this.initialMap = new ArrayList<>( enums.length );
+            //this.initialMap = new ArrayList<>( enums.length );
+            this.deepHistoryMap = new ArrayList<>( enums.length );
             for ( Object aEnum : enums ) {
-                this.initialMap.add( ( ( S ) aEnum ).getInitialState() );
+                S is = ( ( S ) aEnum ).getInitialState();
+                List<S> iss = new ArrayList<>();
+                iss.add( is );
+                this.deepHistoryMap.add( iss );
             }
             nullState = ( ( S ) enums[ 0 ] ).getNullState();
             this.stack.push( nullState );
         } else {
             nullState = null;
+            deepHistoryMap = null;
         }
         if ( null != nullState ) {
             final S initialState = nullState.getInitialState();
@@ -48,13 +50,18 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
     }
 
     @SafeVarargs
+    @SuppressWarnings( "unchecked" )
     public final void enterState( S... state ) {
         for ( S s : state ) {
-
             addState( s );
-            S substate = initialMap.get( s.ordinal() );
-            if ( null != substate ) {
-                addState( substate );
+        }
+
+        S topState = stack.peek();
+
+        List<S> hist = deepHistoryMap.get( topState.ordinal() );
+        if ( hist.size() > 0 && hist.get( 0 ) != null ) {
+            for ( S s : hist ) {
+                addState( s );
             }
         }
     }
@@ -63,14 +70,8 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
     @SuppressWarnings( "unchecked" )
     public final void addState( S... state ) {
         for ( S childState : state ) {
-            S parent = stack.peek();
-            int parentId = parent.ordinal();
-            history.put(parent, childState);
             stack.push( childState );
             childState.enter( ( C ) this );
-            if ( parent.isInitialStateHistory() ) {
-                this.initialMap.set( parentId, childState );
-            }
         }
     }
 
@@ -94,9 +95,10 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
             throw new IllegalArgumentException( "Cannot leave state '" + state
                     + "'because it is not active" );
         }
-        S topState;
-        while ( ( topState = stack.peek() ) != state ) {
+        S topState = stack.peek();
+        while ( topState != state ) {
             leaveAndPop();
+            topState = stack.peek();
         }
     }
 
@@ -107,6 +109,15 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
      */
     @SuppressWarnings( "unchecked" )
     public final void leaveState( S state ) {
+        if ( state.isInitialStateHistory() ) {
+            List<S> childState = getFirstChild( state );
+            this.deepHistoryMap.set( state.ordinal(), childState );
+        } else if ( state.isInitialStateDeepHistory() ) {
+            System.out.println( "deep hist state=" + state );
+            System.out.println( getChildren( state ) );
+            deepHistoryMap.set( state.ordinal(), getChildren( state ) );
+            System.out.println( "deep for " + state + "=" + deepHistoryMap.get( state.ordinal() ) );
+        }
         leaveSubStates( state );
         leaveAndPop();
     }
@@ -174,13 +185,6 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
                     + logicalState() );
         }
     }
-    
-    public S getHistoryStateFrom( S from, S initial ){
-        if( !history.containsKey( from ) ){
-            return initial;
-        }
-        return history.get( from );
-    }
 
     /**
      * Produce a string to identify the sequence or nesting of states. The NULL
@@ -198,10 +202,25 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
      * @param parent for which the child must be produced.
      * @return The child, if any.
      */
-    public S getFirstChild( S parent ) {
-        return stack.peekDownFrom( parent, -1 );
+    List<S> getFirstChild( S parent ) {
+        List<S> result = new ArrayList<>();
+        result.add( stack.peekDownFrom( parent, -1 ) );
+        return result;
     }
 
+    /**
+     * Get the (current) child states of a parent state. 
+     * @param parent of the children
+     * @return the children in a list.
+     */
+    List<S> getChildren( S parent ) {
+        return stack.above( parent, deepHistoryMap.get( parent.ordinal() ) );
+    }
+
+    /**
+     * Is debug set.
+     * @return true is debugging.
+     */
     public boolean isDebug() {
         return debug;
     }

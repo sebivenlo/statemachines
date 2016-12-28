@@ -106,6 +106,14 @@ public class ContextBaseTest {
     }
 
     @Test
+    public void testE8() {
+        System.out.println( "==== e8" );
+        ctx.e8();
+        assertEquals( "S3.S32", ctx.logicalState() );
+
+    }
+
+    @Test
     public void testHistory() {
         System.out.println( "==== history" );
         ctx.e2();
@@ -119,6 +127,7 @@ public class ContextBaseTest {
 
     @Test
     public void testS3() {
+        System.out.println( "S3========" );
         ctx.e1();
         assertEquals("S1.S11",ctx.logicalState());
         ctx.e9();
@@ -130,12 +139,16 @@ public class ContextBaseTest {
 
         ctx.e9();
         assertEquals("S3.S32",ctx.logicalState());
-    }
 
-    @Test
-    public void testGetFirstChild() {
-        ctx.e1();
-        assertEquals( S11, ctx.getFirstChild( S1 ) );
+        ctx.e10();
+        assertEquals("S3.S33.S331",ctx.logicalState());
+        ctx.e11();
+        assertEquals("S3.S33.S332",ctx.logicalState());
+        ctx.e12();
+        assertEquals("S1.S11",ctx.logicalState());
+        ctx.e9();
+        assertEquals("S3.S33.S332",ctx.logicalState());
+        
     }
 
     @Test( expected = IllegalArgumentException.class )
