@@ -29,10 +29,13 @@ public class ContextBaseTest {
             return this;
         }
     };
+
     Device dev = new Device() {
     };
+
     Device dev2 = new Device() {
     };
+    
     @SuppressWarnings( "unchecked" )
     ContextBase cb = new ContextBase( sb.getClass() ) {
         @Override
