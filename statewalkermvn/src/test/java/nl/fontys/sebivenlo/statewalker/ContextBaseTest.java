@@ -57,6 +57,8 @@ public class ContextBaseTest {
     @Test
     @SuppressWarnings( "unchecked" )
     public void testSomeMethod() {
+        cb.initialize();
+        cb2.initialize();
         assertSame( dev, cb.getDevice() );
         assertNotSame( dev, cb2.getDevice() );
     }

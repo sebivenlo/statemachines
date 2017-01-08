@@ -18,7 +18,7 @@ public class ContextBaseTest {
 
     @Before
     public void setup() {
-        ctx = new Context( S.class ).setDebug( true );
+        ctx = new Context( S.class ).initialize().setDebug( true );
     }
 
     @After

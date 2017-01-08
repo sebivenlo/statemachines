@@ -40,7 +40,7 @@ public class StateBaseTest {
     }
 
     S sb = TestState.X;
-    TestContext cb = new TestContext( TestState.class );
+    TestContext cb = new TestContext( TestState.class ).initialize();
 
     /**
      * Only for coverage, the methods have empty bodies

@@ -1,8 +1,6 @@
 package nl.fontys.sebivenlo.statewalker;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -16,11 +14,9 @@ import java.util.logging.Logger;
 public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Device<C, D, S>, S extends StateBase<C, D, S>> {
 
     private final StateStack<S> stack = new StateStack<>( 6 );
-    //private final List<S> initialMap;
     private final S nullState;
     private boolean debug = false;
     private static final Logger LOGGER = Logger.getLogger( ContextBase.class.getCanonicalName() );
-    protected D device;
     private final List<List<S>> deepHistoryMap;
 
     @SuppressWarnings( "unchecked" )
@@ -36,17 +32,21 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
                 this.deepHistoryMap.add( iss );
             }
             nullState = ( ( S ) enums[ 0 ] ).getNullState();
-            this.stack.push( nullState );
         } else {
             nullState = null;
             deepHistoryMap = null;
         }
+    }
+
+    public C initialize() {
         if ( null != nullState ) {
+            this.stack.push( nullState );
             final S initialState = nullState.getInitialState();
             if ( initialState != null ) {
                 this.enterState( initialState );
             }
         }
+        return ( C ) this;
     }
 
     @SafeVarargs

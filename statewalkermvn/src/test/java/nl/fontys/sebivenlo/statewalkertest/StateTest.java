@@ -16,7 +16,7 @@ public class StateTest {
     @Test
     public void testDefaultMethods() {
         State x = StateEnum.A;
-        Context ctx = new Context(StateEnum.class);
+        Context ctx = new Context(StateEnum.class).initialize();
         ctx.addState( x);
         x.e1( ctx );
         x.e2( ctx );
