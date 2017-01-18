@@ -56,6 +56,7 @@
  * State walker provides the following transition types:
  *
  * <h3>simple transition</h3>
+ * <div style='float: left'>
  * <img src='doc-files/_1.svg'  alt='simple transistion' >
  *
  * <pre>
@@ -65,6 +66,160 @@
  *      public void e( Context ctx ) {
  *          ctx.changeFromToState( "e1", this, B );
  *      }
+ *   }
+ * </code>
+ * </pre>
+ *
+ * </div>
+ *
+ * <div>
+ * <img src='doc-files/_2.svg'  alt='simple transistion' >
+ *
+ * <pre>
+ * <code>
+ *   A {
+ *      {@literal @}Override
+ *      public void e( Context ctx ) {
+ *          ctx.changeFromToState( "e1", this, B1, B2 );
+ *      }
+ *   }
+ * </code>
+ * </pre>
+ *
+ * </div>
+ *
+ * <div style='float: left'>
+ * <img src='doc-files/_3a.svg'  alt='simple transistion' >
+ *
+ * <pre>
+ * <code>
+ *   A2 {
+ *      {@literal @}Override
+ *      public void e( Context ctx ) {
+ *          ctx.changeFromToState( "e1", this, B);
+ *      }
+ *   }
+ * </code>
+ * </pre>
+ * </div>
+ *
+ * <div>
+ * <img src='doc-files/_3b.svg'  alt='simple transistion' >
+ *
+ * <pre>
+ * <code>
+ *   A1 {
+ *      {@literal @}Override
+ *      public void e( Context ctx ) {
+ *          ctx.changeFromToState( "e1", this, B );
+ *      }
+ *   }
+ * </code>
+ * </pre>
+ * </div>
+ *
+ * <h4>Simple transition between sub states</h4>
+ * <img src='doc-files/_4.svg'  alt='simple transistion' >
+ *
+ * <pre>
+ * <code>
+ *   B21 {
+ *      {@literal @}Override
+ *      public void e( Context ctx ) {
+ *          ctx.changeFromToState( "e1", this, B22 );
+ *      }
+ *   }
+ * </code>
+ * </pre>
+ *
+ * <h4>Inner transition</h4>
+ * <p>When this transition is used the entry and exit methods will not be executed.</p>
+ * <img src='doc-files/_5.svg'  alt='simple transistion' >
+ *
+ * <pre>
+ * <code>
+ *   B1 {
+ *      {@literal @}Override
+ *      public void e( Context ctx ) {
+ *          ctx.changeFromToState( "e1", this, B22 );
+ *      }
+ *   }
+ * </code>
+ * </pre>
+ *
+ * <h4>Initial pseudo state</h4>
+ * <p>By implementing the optional getInitailState we can define what the default state should be.</p>
+ * <img src='doc-files/_6.svg'  alt='simple transistion' >
+ *
+ * <pre>
+ * <code>
+ *   A {
+ *      {@literal @}Override
+ *      public void e( Context ctx ) {
+ *          ctx.changeFromToState( "e1", this, B1, B2 );
+ *      }
+ *   },
+ *   B1 {
+ *      {@literal @}Override
+ *      public StateImplentation getInitialState() {
+            return B22;
+        }
+ *   }
+ * </code>
+ * </pre>
+ *
+ * <h4>Shallow history</h4>
+ * <p>By implementing the getInitailState and the isInitialStateHistory 
+ * function we can define what the initial state should be. And that the 
+ * framework will make sure that history is applied when needed.</p>
+ * <img src='doc-files/_7.svg'  alt='simple transistion' >
+ *
+ * <pre>
+ * <code>
+ *   A {
+ *      {@literal @}Override
+ *      public void e( Context ctx ) {
+ *          ctx.changeFromToState( "e1", this, B1, B2 );
+ *      }
+ *   },
+ *   B1 {
+ *      {@literal @}Override
+ *      public boolean isInitialStateHistory() {
+            return true;
+        }
+        
+        {@literal @}Override
+ *      public StateImplentation getInitialState() {
+            return B22;
+        }
+ *   }
+ * </code>
+ * </pre>
+ *
+ * <h4>Deep history</h4>
+ * <p>By implementing the getInitailState and the isInitialStateDeepHistory 
+ * function we can define what the initial state should be. And that the 
+ * framework will make sure that history is applied when needed.</p>
+ * <img src='doc-files/_8.svg'  alt='simple transistion' >
+ *
+ * <pre>
+ * <code>
+ *   A {
+ *      {@literal @}Override
+ *      public void e( Context ctx ) {
+ *          ctx.changeFromToState( "e1", this, B1, B2 );
+ *      }
+ *   },
+ *   B1 {
+ *      {@literal @}Override
+ *      public boolean isInitialStateDeepHistory() {
+            return true;
+        }
+        
+        {@literal @}Override
+ *      public StateImplentation getInitialState() {
+            return B22;
+        }
  *   }
  * </code>
  * </pre>
