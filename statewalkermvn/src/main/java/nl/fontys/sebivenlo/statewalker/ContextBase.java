@@ -2,6 +2,7 @@ package nl.fontys.sebivenlo.statewalker;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -16,7 +17,7 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
     private final StateStack<S> stack = new StateStack<>( 6 );
     private final S nullState;
     private boolean debug = false;
-    private static final Logger LOGGER = Logger.getLogger( ContextBase.class.getCanonicalName() );
+    private static final Logger LOGGER = Logger.getLogger( ContextBase.class.getName() );
     private final List<List<S>> deepHistoryMap;
 
     @SuppressWarnings( "unchecked" )
@@ -137,6 +138,7 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
      * Get the super state of a state.
      *
      * @param state for which the super state should be retrieved.
+     *
      * @return the super (parent) state of state.
      */
     public final S superState( S state ) {
@@ -148,19 +150,20 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
      * sub-states. For the start state the leave method is invoked, for each
      * state in endState the enter state is invoked.
      *
-     * @param event name for the transition
-     * @param start state to leave
+     * @param event    name for the transition
+     * @param start    state to leave
      * @param endState states to enter in order given.
      */
     @SafeVarargs
     public final void changeFromToState( String event, S start, S... endState ) {
-        String oldState = logicalState();
+        String ls = "";
+        if ( LOGGER.isLoggable( Level.FINE ) ) {
+            ls = logicalState();
+        }
         leaveState( start );
         enterState( endState );
-        if ( debug ) {
-            System.out.println( "from " + oldState + ", event '"
-                    + event + "' to "
-                    + logicalState() );
+        if ( LOGGER.isLoggable( Level.FINE ) ) {
+            LOGGER.log(Level.FINE, "from {0}, event [{1}] to {2}", new Object[ ]{ ls, event, logicalState() });
         }
     }
 
@@ -168,19 +171,20 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
      * Do a transition with out leaving this state. The sub states of state are
      * left, then the endStates are entered in the order given.
      *
-     * @param event name for the transition
-     * @param start state that is NOT left
+     * @param event    name for the transition
+     * @param start    state that is NOT left
      * @param endState new inner state.
      */
     @SafeVarargs
     public final void innerTransition( String event, S start, S... endState ) {
-        String oldState = logicalState();
+        String ls = "";
+        if ( LOGGER.isLoggable( Level.FINE ) ) {
+            ls = logicalState();
+        }
         leaveSubStates( start );
         enterState( endState );
-        if ( debug ) {
-            System.out.println( "from " + oldState + ", event '"
-                    + event + "' to "
-                    + logicalState() );
+        if ( LOGGER.isLoggable( Level.FINE ) ) {
+            LOGGER.log(Level.FINE, "from {0}, event [{1}] to {2}", new Object[ ]{ ls, event, logicalState() });
         }
     }
 
@@ -198,6 +202,7 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
      * Get the first active sub state of this parent or super state.
      *
      * @param parent for which the child must be produced.
+     *
      * @return The child, if any.
      */
     List<S> getFirstChild( S parent ) {
@@ -210,6 +215,7 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
      * Get the (current) child states of a parent state.
      *
      * @param parent of the children
+     *
      * @return the children in a list.
      */
     List<S> getChildren( S parent ) {
