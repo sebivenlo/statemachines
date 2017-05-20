@@ -1,14 +1,14 @@
 /**
  * A enum bases state machine implementation of the <strong>GoF State</strong>
  * pattern.
- *
+ * <p>
  * The package is designed with ease of use and type safety in mind, and
  * therefor can not completely avoid the complexity that goes with it. The
  * complexity left for the user is declaring the application specific Context,
  * Device, and State as a trisome in the generic declaration. To even further
  * reduce the complexity, the user is advised to declare State as an
  * intermediate interface that adds the application specific methods.
- *
+ * <p>
  * In the example, app, the declarations of AppContext, AppDevice, and AppState
  * could then be as follows:
  * <pre>
@@ -20,27 +20,27 @@
  *
  * }
  * </pre>
- *
+ * <p>
  * <p>
  * When declaring your classes in this way you will by definition have some
  * cyclic dependencies, which cannot be avoided really easily, so it might take
  * some effort to convince the compiler it is okay. It may help to temporarily
  * turn off the IDE feature to compile on save.</p>
- *
+ * <p>
  * <p>
  * The standard use is also shown in the class diagram below, where the
  * app-package is the users application package. The {@code <C,D,S,>} generic
  * tokens should be understood as alphabetic mnemonics for Context, Device and
  * State.</p>
- *
+ * <p>
  * <img src='doc-files/statewalker.svg' alt='statewalker usage class diagram'>
  * <br>
- *
+ * <p>
  * <p>
  * <b>Implementation detail.</b> The classes have been designed to reduce
  * complexity as much as possible, in particular using the generic annotation
  * needed.
- *
+ * <p>
  * This applies more to the use of the package then to the package it self,
  * which cannot avoid some unchecked warnings in its implementation. In the
  * implementation some use of {@code @SuppresWarnings("unchecked")} cannot be
@@ -52,12 +52,12 @@
  * exactly as intended, and has the benefit that the array allocation is done
  * only once, at class loading time.
  * </p>
- *
+ * <p>
  * State walker provides the following transition types:
- *
+ * <p>
  * <h3>simple transition</h3>
  * <img src='doc-files/_1.svg'  alt='simple transistion' >
- *
+ * <p>
  * <pre>
  * <code>
  *   A {
@@ -68,7 +68,7 @@
  *   }
  * </code>
  * </pre>
- *
+ * <p>
  * <h3>Transition to sub-state</h3>
  * <img src='doc-files/_2.svg'  alt='simple transistion' >
  * <br>
@@ -83,10 +83,11 @@
  *   }
  * </code>
  * </pre>
- *
+ * <p>
  * <h3>Transition from sub-state</h3>
  * <img src='doc-files/_3a.svg'  alt='simple transistion' ><br>
- * Note that the super state of A2 is mentioned in the transition call.
+ * Note that the super state A1 of A2 is mentioned in the transition call, because is it at the same
+ * depth as the target.
  * <pre>
  * <code>
  *   A2 {
@@ -97,10 +98,10 @@
  *   }
  * </code>
  * </pre>
- *
+ * <p>
  * <h3>Transition from super-state</h3>
  * <img src='doc-files/_3b.svg'  alt='simple transistion' ><br>
- * Note that the super state this is mentioned as source state in the transition
+ * Note that the super state <b>this</b> is mentioned as source state in the transition
  * call.
  * <pre>
  * <code>
@@ -112,11 +113,11 @@
  *   }
  * </code>
  * </pre>
- *
+ * <p>
  * <h3>Transition to sub-state implemented in super state</h3>
  * <img src='doc-files/_5.svg'  alt='simple transistion' ><br>
  * Note the use of the innerTranstion call, which only affects sub-states.
- *
+ * <p>
  * <pre>
  * <code>
  *   B1 {
@@ -127,7 +128,7 @@
  *   }
  * </code>
  * </pre>
- *
+ * <p>
  * <h3>Transition to sub-state implemented in super state</h3>
  * <img src='doc-files/_6.svg'  alt='simple transistion' ><br>
  * Initials states are specified and implemented with a map lookup in the state
@@ -136,7 +137,7 @@
  * lookup is an implementation detail that avoids having to overwrite the
  * {@code getInitialState()} method in every state. The map used is an enum-map
  * which has O(1) lookup properties, like an array access.
- *
+ * <p>
  * <pre>
  * <code>
  *   A1 {
@@ -159,7 +160,7 @@
  *   }
  * </code>
  * </pre>
- *
+ * <p>
  * <h3>Shallow and Deep History</h3>
  * Deep and shallow history are implemented with sets and two methods
  * that do a lookup in these sets. Both sets (different names of course) are implemented as
@@ -174,7 +175,7 @@
  *    }
  * </code>
  * </pre>
- *
+ * <p>
  * With this mapping (and lookup by the ContextBase) the state implementation is
  * the same as in the examples with initial states. The initial states map is
  * also used in this case, taking the states that the history pseudo state
