@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Base class for all statewalker state machine contexts.
  *
  * @author Pieter van den Hombergh {@code <p.vandenhombergh@fontys.nl>}
  * @param <C> Context for this state machine. This
@@ -17,9 +18,15 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
     private final StateStack<S> stack = new StateStack<>( 6 );
     private final S nullState;
     private boolean debug = false;
-    private static final Logger LOGGER = Logger.getLogger( ContextBase.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger( ContextBase.class.
+            getName() );
     private final List<List<S>> deepHistoryMap;
 
+    /**
+     * Create a context for a state machine with states of type stateClass.
+     *
+     * @param stateClass the class of all states.
+     */
     @SuppressWarnings( "unchecked" )
     public ContextBase( Class<?> stateClass ) {
         if ( stateClass.isEnum() ) {
@@ -39,6 +46,12 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
         }
     }
 
+    /**
+     * Initialise this context. After setup, some arrangements may have to take
+     * place before this state machine can commence.
+     *
+     * @return this context
+     */
     public C initialize() {
         if ( null != nullState ) {
             this.stack.push( nullState );
@@ -50,6 +63,16 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
         return ( C ) this;
     }
 
+    /**
+     * Enter a specific state hierarchy. enterState adds all states listed to
+     * the current state stack and invokes the {@code enter()} method for each
+     * state.
+     *
+     * If the top most state has a history stored, that history is resumed in
+     * the same way as the states were added as per previous description.
+     *
+     * @param state states to enter.
+     */
     @SafeVarargs
     @SuppressWarnings( "unchecked" )
     public final void enterState( S... state ) {
@@ -68,6 +91,13 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
         }
     }
 
+    /**
+     * Add and invoke {@code enter()} on each state in the list. At the end of
+     * this method, the state hierarchy has "grown" with the states in the list
+     * state.
+     *
+     * @param state to add.
+     */
     @SafeVarargs
     @SuppressWarnings( "unchecked" )
     public final void addState( S... state ) {
@@ -150,8 +180,8 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
      * sub-states. For the start state the leave method is invoked, for each
      * state in endState the enter state is invoked.
      *
-     * @param event    name for the transition
-     * @param start    state to leave
+     * @param event name for the transition
+     * @param start state to leave
      * @param endState states to enter in order given.
      */
     @SafeVarargs
@@ -163,7 +193,8 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
         leaveState( start );
         enterState( endState );
         if ( LOGGER.isLoggable( Level.FINE ) ) {
-            LOGGER.log(Level.FINE, "from {0}, event [{1}] to {2}", new Object[ ]{ ls, event, logicalState() });
+            LOGGER.log( Level.FINE, "from {0}, event [{1}] to {2}",
+                    new Object[]{ ls, event, logicalState() } );
         }
     }
 
@@ -171,8 +202,8 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
      * Do a transition with out leaving this state. The sub states of state are
      * left, then the endStates are entered in the order given.
      *
-     * @param event    name for the transition
-     * @param start    state that is NOT left
+     * @param event name for the transition
+     * @param start state that is NOT left
      * @param endState new inner state.
      */
     @SafeVarargs
@@ -184,7 +215,8 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
         leaveSubStates( start );
         enterState( endState );
         if ( LOGGER.isLoggable( Level.FINE ) ) {
-            LOGGER.log(Level.FINE, "from {0}, event [{1}] to {2}", new Object[ ]{ ls, event, logicalState() });
+            LOGGER.log( Level.FINE, "from {0}, event [{1}] to {2}",
+                    new Object[]{ ls, event, logicalState() } );
         }
     }
 
@@ -231,6 +263,11 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
         return debug;
     }
 
+    /**
+     * Set the debug flag for more debugging output.
+     * @param d flag value
+     * @return this context.
+     */
     @SuppressWarnings( "unchecked" )
     public C setDebug( boolean d ) {
         debug = d;

@@ -148,6 +148,11 @@ class StateStack<E> implements Stack<E> {
         return storage.length;
     }
 
+    /**
+     * Does this stack contain e?
+     * @param e to test
+     * @return result of test.
+     */
     public boolean contains( Object e ) {
         for ( Object o : storage ) {
             if ( e == o ) {
@@ -157,14 +162,18 @@ class StateStack<E> implements Stack<E> {
         return false;
     }
 
+    /**
+     * Get the logical state as a string.
+     * @return the state hierarchy as a string
+     */
     String logicalState() {
         String glue = "";
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for ( int i = 1; i <= top; i++ ) {
-            result += glue + storage[ i ];
+            result.append( glue ).append(storage[ i ]);
             glue = ".";
         }
-        return result;
+        return result.toString();
     }
 
 }

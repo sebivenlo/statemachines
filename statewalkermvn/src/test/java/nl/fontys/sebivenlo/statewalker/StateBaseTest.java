@@ -43,7 +43,7 @@ public class StateBaseTest {
     TestContext cb = new TestContext( TestState.class ).initialize();
 
     /**
-     * Only for coverage, the methods have empty bodies
+     * Only for coverage, the methods have empty bodies.
      */
     @Test
     public void coverageComplete() {
