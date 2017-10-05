@@ -168,12 +168,12 @@ enum S implements State {
         }
     };
 
+    static S[] s1Subtates = { S11, S12 };
     /**
      * All instances give the same answer.
      *
      * @return
      */
-    static S[] s1Subtates = { S11, S12 };
 
     @Override
     public State getNullState() {
