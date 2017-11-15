@@ -21,6 +21,7 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
     private static final Logger LOGGER = Logger.getLogger( ContextBase.class.
             getName() );
     private final List<List<S>> deepHistoryMap;
+    protected D device;
 
     /**
      * Create a context for a state machine with states of type stateClass.
@@ -52,6 +53,7 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
      *
      * @return this context
      */
+    @SuppressWarnings( "unchecked" )
     public C initialize() {
         if ( null != nullState ) {
             this.stack.push( nullState );
@@ -162,7 +164,9 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
      *
      * @return the device
      */
-    public abstract D getDevice();
+    public D getDevice() {
+        return device;
+    }
 
     /**
      * Get the super state of a state.
@@ -180,8 +184,8 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
      * sub-states. For the start state the leave method is invoked, for each
      * state in endState the enter state is invoked.
      *
-     * @param event name for the transition
-     * @param start state to leave
+     * @param event    name for the transition
+     * @param start    state to leave
      * @param endState states to enter in order given.
      */
     @SafeVarargs
@@ -202,8 +206,8 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
      * Do a transition with out leaving this state. The sub states of state are
      * left, then the endStates are entered in the order given.
      *
-     * @param event name for the transition
-     * @param start state that is NOT left
+     * @param event    name for the transition
+     * @param start    state that is NOT left
      * @param endState new inner state.
      */
     @SafeVarargs
@@ -265,7 +269,9 @@ public abstract class ContextBase<C extends ContextBase<C, D, S>, D extends Devi
 
     /**
      * Set the debug flag for more debugging output.
+     *
      * @param d flag value
+     *
      * @return this context.
      */
     @SuppressWarnings( "unchecked" )

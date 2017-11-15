@@ -9,53 +9,47 @@ import static org.junit.Assert.*;
  */
 public class ContextBaseTest {
 
-    StateBase sb = new StateBase() {
-        @Override
-        public int ordinal() {
-            return 0;
-        }
-
-        @Override
-        public StateBase getNullState() {
-            return null;
-        }
+    interface State extends StateBase<CTX, Dev, State> {
     };
 
-    enum SB implements StateBase {
+    enum SB implements State {
         SB;
 
         @Override
-        public StateBase getNullState() {
+        public State getNullState() {
             return this;
         }
     };
 
-    Device dev = new Device() {
-    };
+    class Dev implements Device<CTX, Dev, State> {
+    }
 
-    Device dev2 = new Device() {
-    };
-    
-    @SuppressWarnings( "unchecked" )
-    ContextBase cb = new ContextBase( sb.getClass() ) {
-        @Override
-        public Device getDevice() {
-            return dev;
+    class Dev1 extends Dev {
+    }
+
+    class Dev2 extends Dev {
+    }
+    Dev dev = new Dev1();
+    Dev dev2 = new Dev2();
+
+    class CTX extends ContextBase<CTX, Dev, State> {
+
+        public CTX( Dev d ) {
+            super( SB.class );
+            super.device = d;
         }
-    };
-    @SuppressWarnings( "unchecked" )
-    ContextBase cb2 = new ContextBase( SB.SB.getClass() ) {
-        @Override
-        public Device getDevice() {
-            return dev2;
-        }
-    };
+
+    }
+
+    CTX cb = new CTX( dev );
+
+    CTX cb2 = new CTX( dev2 );
 
     /**
      * For coverage.
      */
     @Test
-    @SuppressWarnings( "unchecked" )
+    //@SuppressWarnings( "unchecked" )
     public void testSomeMethod() {
         cb.initialize();
         cb2.initialize();
@@ -63,4 +57,18 @@ public class ContextBaseTest {
         assertNotSame( dev, cb2.getDevice() );
     }
 
+    // Just for coverage
+    @SuppressWarnings( {"unchecked","rawtypes"} )
+    class CTXNoEnum extends ContextBase {
+
+        public CTXNoEnum() {
+            super( Object.class );
+        }
+    }
+
+    // Just for coverage
+    @Test
+    public void testRawContext() {
+        CTXNoEnum ctxNoEnum = new CTXNoEnum();
+    }
 }
