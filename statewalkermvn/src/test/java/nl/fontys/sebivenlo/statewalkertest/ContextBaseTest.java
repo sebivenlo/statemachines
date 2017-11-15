@@ -1,5 +1,8 @@
 package nl.fontys.sebivenlo.statewalkertest;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import nl.fontys.sebivenlo.statewalker.ContextBase;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -60,6 +63,8 @@ public class ContextBaseTest {
 
     @Test
     public void testE4() {
+        Logger ctxLogger= Logger.getLogger(ContextBase.class.getName());
+        ctxLogger.setLevel(Level.FINE);
         System.out.println( "==== e4" );
         ctx.e1();
         assertTrue( ctx.isDebug() );
